@@ -29,7 +29,7 @@ public class BrokerTest {
         Throwable err = assertThrows(BrokerException.class, () -> broker.placeOrder(order));
 
         assertEquals(
-                String.format("Insufficient funds for transaction of %d units of %s.",
+                String.format("Insufficient funds to purchase %d units of %s.",
                     order.getStockQty(),
                     order.getTicker()),
                 err.getMessage()

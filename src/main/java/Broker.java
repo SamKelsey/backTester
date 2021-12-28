@@ -64,10 +64,13 @@ public class Broker {
         }
 
         balance += order.getOrderValue();
-        portfolio.put(
-                order.getTicker(),
-                portfolio.get(order.getTicker()) - order.getStockQty()
-        );
+        int ownedUnits = portfolio.get(order.getTicker()) - order.getStockQty();
+
+        if (ownedUnits == 0) {
+            portfolio.remove(order.getTicker());
+        } else {
+            portfolio.put(order.getTicker(), ownedUnits);
+        }
     }
 
     public float getBalance() {

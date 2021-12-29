@@ -1,4 +1,5 @@
 import Exceptions.BrokerException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
  * A class responsible for keeping track of monetary gains/losses during backtracking simulation
  * and mocking the buying/selling of assets.
  */
+@Slf4j
 public class Broker {
 
     private float balance;
@@ -25,6 +27,7 @@ public class Broker {
      * @param order - The order to be placed.
      */
     public void placeOrder(Order order) {
+        log.info("Placing order: " + order.toString());
         switch (order.getOrderType()) {
             case BUY:
                 buyStock(order);

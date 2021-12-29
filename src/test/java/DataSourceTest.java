@@ -1,8 +1,10 @@
 import Exceptions.DataSourceException;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DataSourceTest {
 
@@ -14,15 +16,38 @@ public class DataSourceTest {
 
     @Test
     void shouldInstantiateCustomFile_whenConstructed() throws DataSourceException {
-        DataSource dataSource = new DataSource("src/test/resources/");
+        DataSource dataSource = createDataSource();
         assertNotNull(dataSource.getCurrentFileHeaders());
     }
 
     @Test
-    void shouldThrowException_whenEmptyInvalidDirectory() throws DataSourceException {
-        assertThrows(DataSourceException.class, () -> {
-            new DataSource(null);
-        });
+    void shouldReturnData_whenGetData() throws DataSourceException {
+        DataSource dataSource = createDataSource();
+        String[] data = dataSource.getData();
     }
 
+    @Test
+    void shouldReturnNull_whenNoData() throws DataSourceException {
+        DataSource dataSource = createDataSource();
+        dataSource.getData();
+        dataSource.getData();
+        assertNull(dataSource.getData());
+    }
+
+    @Test
+    void shouldReturnTrue_whenNextFile() throws DataSourceException {
+        DataSource dataSource = createDataSource();
+        assertTrue(dataSource.hasNextFile());
+    }
+
+    @Test
+    void shouldUseNextFile_whenNextFile() throws DataSourceException {
+        DataSource dataSource = createDataSource();
+        dataSource.nextFile();
+        assertEquals(1, dataSource.getCurrentFile());
+    }
+
+    private DataSource createDataSource() throws DataSourceException {
+        return new DataSource("src/test/resources/");
+    }
 }

@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 public class DataSource {
@@ -24,7 +23,7 @@ public class DataSource {
      * @throws DataSourceException If something bad happens whilst initializing object.
      */
     public DataSource() throws DataSourceException {
-        fileNames = getFileNames("src/main/resources/test_data/");
+        fileNames = getFiles("src/main/resources/test_data/");
         instantiateFile(fileNames.get(0));
     }
 
@@ -34,11 +33,7 @@ public class DataSource {
      * @throws DataSourceException If something bad happens whilst initializing object.
      */
     public DataSource(String testDataPath) throws DataSourceException {
-        if (Objects.isNull(testDataPath)) {
-            throw new DataSourceException("Test data directory cannot be null.");
-        }
-
-        fileNames = getFileNames(testDataPath);
+        fileNames = getFiles(testDataPath);
         instantiateFile(fileNames.get(0));
     }
 
@@ -97,13 +92,11 @@ public class DataSource {
      * @param dir Directory to be listed.
      * @return A list of Files in the given directory.
      */
-    public List<File> getFileNames(String dir) throws DataSourceException {
+    public List<File> getFiles(String dir) throws DataSourceException {
         List<File> files = new ArrayList<>();
 
         try {
-            Files.list(new File(dir).toPath()).forEach(path -> {
-                files.add(path.toFile());
-            });
+            Files.list(new File(dir).toPath()).forEach(path -> files.add(path.toFile()));
         } catch (IOException e) {
             throw new DataSourceException("Empty test data directory provided.", e);
         }
@@ -113,5 +106,9 @@ public class DataSource {
 
     public String[] getCurrentFileHeaders() {
         return currentFileHeaders;
+    }
+
+    public int getCurrentFile() {
+        return currentFile;
     }
 }

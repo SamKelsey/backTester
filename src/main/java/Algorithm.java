@@ -1,15 +1,13 @@
 /**
- * A base class to be implemented by users to define their trading algorithm.
+ * A base class to define trading algorithms.
+ * <h3>To be implemented by user.</h3>
  */
 public abstract class Algorithm {
 
-    private final Broker broker;
-    private final DataSource dataSource;
-
-    public Algorithm() {
-        this.broker = new Broker();
-        this.dataSource = new DataSource();
-    }
-
-    public abstract void run();
+    /**
+     * The main method for an Algorithm that runs the algorithm against a given data entry.
+     * @param data An object containing the required data for the algorithm.
+     * @return An int denoting to buy (0), sell (1), or do nothing (2).
+     */
+    public abstract int run(Object data);
 }

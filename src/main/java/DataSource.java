@@ -38,6 +38,22 @@ public class DataSource {
     }
 
     /**
+     * A method to check if there is another row of data to be read from the current file.
+     * @return boolean
+     * @throws DataSourceException If something bad happens when reading the file.
+     */
+    public boolean hasNextData() throws DataSourceException {
+        boolean res;
+        try {
+            res = reader.peek() != null;
+        } catch (IOException e) {
+            throw new DataSourceException("Error reading line from file.", e);
+        }
+
+        return res;
+    }
+
+    /**
      * A method responsible for returning the next row of csv data.
      * @return A string array representing the next row of csv data.
      * Returns null if there is no more data in the csv.

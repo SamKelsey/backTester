@@ -2,6 +2,7 @@ import exceptions.DataSourceException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -18,6 +19,19 @@ public class DataSourceTest {
     void shouldInstantiateCustomFile_whenConstructed() throws DataSourceException {
         DataSource dataSource = createDataSource();
         assertNotNull(dataSource.getCurrentFileHeaders());
+    }
+
+    @Test
+    void shouldReturnIfNextData_whenHasNextData() throws DataSourceException {
+        DataSource dataSource = createDataSource();
+
+        boolean expectTrue = dataSource.hasNextData();
+        dataSource.getData();
+        dataSource.getData();
+        boolean expectFalse = dataSource.hasNextData();
+
+        assertTrue(expectTrue);
+        assertFalse(expectFalse);
     }
 
     @Test

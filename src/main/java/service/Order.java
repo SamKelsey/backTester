@@ -1,3 +1,5 @@
+package service;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

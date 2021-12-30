@@ -1,5 +1,11 @@
-import Exceptions.BrokerException;
+package service;
+
+import exceptions.BrokerException;
 import org.junit.jupiter.api.Test;
+import utils.TestUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -16,7 +22,7 @@ public class BrokerTest {
 
         broker.placeOrder(order);
 
-        assertEquals(startingBalance - 200, broker.getBalance());
+        assertEquals(startingBalance - 200, broker.getCash());
         assertTrue(broker.getPortfolio().containsKey("AAPL"));
         assertEquals(2, broker.getPortfolio().get("AAPL"));
     }
@@ -51,7 +57,7 @@ public class BrokerTest {
         float expectedBalance = startingBalance - (
                 (buyOrder.getStockQty() - sellOrder.getStockQty()) * sellOrder.getStockPrice()
         );
-        assertEquals(expectedBalance, broker.getBalance());
+        assertEquals(expectedBalance, broker.getCash());
         assertEquals(1, broker.getPortfolio().get("AAPL"));
     }
 
@@ -65,7 +71,7 @@ public class BrokerTest {
 
         broker.placeOrder(sellOrder);
 
-        assertEquals(startingBalance, broker.getBalance());
+        assertEquals(startingBalance, broker.getCash());
         assertFalse(broker.getPortfolio().containsKey("AAPL"));
     }
 
@@ -83,5 +89,30 @@ public class BrokerTest {
                         order.getTicker()),
                 err.getMessage()
         );
+    }
+
+    @Test
+    void shouldReturnAccountSummary_whenCreateAccountSummary() {
+        Broker broker = new Broker(1000);
+        Order order = TestUtils.getValidOrder(OrderType.BUY);
+        broker.placeOrder(order);
+
+        BrokerAccountSummary summary = broker.createAccountSummary();
+
+        assertEquals(800, summary.getCash());
+        assertEquals(broker.getPortfolio(), summary.getPortfolio());
+    }
+
+    @Test
+    void shouldCalculateTotalEquity_whenGetTotalEquity() {
+        Map<String, Float> stockPrices = new HashMap<>();
+        stockPrices.put("AAPL", 300f);
+
+        Broker broker = new Broker(1000);
+        Order order = TestUtils.getValidOrder(OrderType.BUY);
+        broker.placeOrder(order);
+
+        float totalEquity = broker.getTotalEquity(stockPrices);
+        assertEquals(1400, totalEquity);
     }
 }

@@ -3,10 +3,17 @@
  */
 public class BackTester {
 
-    public void example() {
-        Order order = new Order("AAPL", OrderType.BUY, 2, 4);
-        System.out.println(order.getOrderValue());
-        System.out.println(order.toString());
+    private final DataSource dataSource;
+    private final Algorithm algorithm;
+
+    public BackTester(Algorithm algorithm, DataSource dataSource) {
+        this.dataSource = dataSource;
+        this.algorithm = algorithm;
+    }
+
+    // Kicks off simulation.
+    public void run() {
+
     }
 
 }

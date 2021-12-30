@@ -1,4 +1,6 @@
-import Exceptions.BrokerException;
+package service;
+
+import exceptions.BrokerException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
@@ -11,15 +13,16 @@ import java.util.Map;
 @Slf4j
 public class Broker {
 
-    private float balance;
+    private float cash;
+    private float totalEquity;
     private final Map<String, Integer> portfolio = new HashMap<>();
 
     public Broker() {
-        this.balance = 1_000_000;
+        this.cash = 1_000_000;
     }
 
-    public Broker(int balance) {
-        this.balance = balance;
+    public Broker(int cash) {
+        this.cash = cash;
     }
 
     /**
@@ -43,14 +46,14 @@ public class Broker {
     private void buyStock(Order order) {
         if (order.getOrderType() == OrderType.BUY) {
 
-            if (balance < order.getOrderValue()) {
+            if (cash < order.getOrderValue()) {
                 throw new BrokerException(String.format("Insufficient funds to purchase %d units of %s.",
                         order.getStockQty(),
                         order.getTicker())
                 );
             }
 
-            balance -= order.getOrderValue();
+            cash -= order.getOrderValue();
             portfolio.put(
                     order.getTicker(),
                     portfolio.getOrDefault(order.getTicker(), 0) + order.getStockQty()
@@ -66,7 +69,7 @@ public class Broker {
             );
         }
 
-        balance += order.getOrderValue();
+        cash += order.getOrderValue();
         int ownedUnits = portfolio.get(order.getTicker()) - order.getStockQty();
 
         if (ownedUnits == 0) {
@@ -76,8 +79,37 @@ public class Broker {
         }
     }
 
-    public float getBalance() {
-        return balance;
+    /**
+     * A method to take a snapshot of the current broker state and return a summary report of it.
+     * @return BrokerAccountSummary detailing the state of the brokers account.
+     */
+    public BrokerAccountSummary createAccountSummary() {
+        return new BrokerAccountSummary(
+                portfolio,
+                cash
+        );
+    }
+
+    public float getCash() {
+        return cash;
+    }
+
+    /**
+     * A method to calculate the total equity of the broker account.
+     * @param stockPrices A map of the prices for all stocks currently in the brokers portfolio.
+     * @return The total equity of the account.
+     */
+    public float getTotalEquity(Map<String, Float> stockPrices) {
+        float val = 0;
+        for (String key : portfolio.keySet()) {
+            if (!stockPrices.containsKey(key)) {
+                throw new BrokerException("Missing stock price for " + key);
+            }
+
+            val += stockPrices.get(key) * portfolio.get(key);
+        }
+
+        return val + getCash();
     }
 
     public Map<String, Integer> getPortfolio() {

@@ -1,3 +1,8 @@
+package utils;
+
+import service.Order;
+import service.OrderType;
+
 public class TestUtils {
 
     public static Order getValidOrder() {

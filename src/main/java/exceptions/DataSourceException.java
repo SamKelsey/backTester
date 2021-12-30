@@ -1,6 +1,6 @@
 package exceptions;
 
-public class DataSourceException extends Exception {
+public class DataSourceException extends RuntimeException {
 
     public DataSourceException(String message) {
         super(message);

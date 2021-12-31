@@ -1,5 +1,8 @@
 package service;
 
+import dto.BrokerAccountSummary;
+import dto.Order;
+import dto.OrderType;
 import exceptions.BrokerException;
 import org.junit.jupiter.api.Test;
 import utils.TestUtils;

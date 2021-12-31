@@ -1,10 +1,15 @@
 import org.junit.jupiter.api.Test;
-import service.Broker;
+import service.DataSource;
 
 public class BackTesterTest {
 
     @Test
     void example() {
-        Broker broker = new Broker();
+        DataSource dataSource = new DataSource();
+        Algorithm algorithm = new ExampleAlgorithm();
+
+        BackTester backTester = new BackTester(algorithm, dataSource);
+        float profit = backTester.run();
+        System.out.println(profit);
     }
 }

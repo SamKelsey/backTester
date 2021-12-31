@@ -1,3 +1,6 @@
+package service;
+
+import dto.StockData;
 import exceptions.DataSourceException;
 import org.junit.jupiter.api.Test;
 
@@ -37,7 +40,8 @@ public class DataSourceTest {
     @Test
     void shouldReturnData_whenGetData() throws DataSourceException {
         DataSource dataSource = createDataSource();
-        String[] data = dataSource.getData();
+        StockData data = dataSource.getData();
+        assertNotNull(data);
     }
 
     @Test
@@ -59,6 +63,16 @@ public class DataSourceTest {
         DataSource dataSource = createDataSource();
         dataSource.nextFile();
         assertEquals(1, dataSource.getCurrentFile());
+    }
+
+    @Test
+    void shouldReturnFileName_whenGetFileName() {
+        DataSource dataSource = createDataSource();
+
+        String actualName = dataSource.getCurrentFileName();
+        String expectedName = "test_data";
+
+        assertEquals(expectedName, actualName);
     }
 
     private DataSource createDataSource() throws DataSourceException {

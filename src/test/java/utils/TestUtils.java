@@ -1,7 +1,7 @@
 package utils;
 
-import service.Order;
-import service.OrderType;
+import dto.Order;
+import dto.OrderType;
 
 public class TestUtils {
 

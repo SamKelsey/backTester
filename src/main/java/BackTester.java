@@ -1,6 +1,11 @@
+import dto.BrokerAccountSummary;
+import dto.Order;
+import dto.StockData;
 import service.Broker;
-import service.BrokerAccountSummary;
-import service.Order;
+import service.DataSource;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Main class to kick-off backtest simulations.
@@ -20,12 +25,15 @@ public class BackTester {
     /**
      * Main method to kick-off back-testing simulation.
      */
-    public void run() {
+    public float run() {
+
+        Map<String, Float> stockPrices = new HashMap<>();
 
         while (dataSource.hasNextFile()) {
+            StockData data = null;
             while (dataSource.hasNextData()) {
                 // Get row of data
-                String[] data = dataSource.getData();
+                data = dataSource.getData();
 
                 // Get broker summary
                 BrokerAccountSummary summary = broker.createAccountSummary();
@@ -34,14 +42,16 @@ public class BackTester {
                 Order order = algorithm.run(data, summary);
 
                 // Carry out action on broker, decided by algorithm.
-                if (order == null) {
-                    continue;
-                }
-
                 broker.placeOrder(order);
             }
 
+            if (data != null) {
+                stockPrices.put(data.getTicker(), data.getStockPrice());
+            }
             dataSource.nextFile();
         }
+
+        // Return final total equity.
+        return broker.getTotalEquity(stockPrices);
     }
 }

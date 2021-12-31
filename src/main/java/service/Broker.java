@@ -1,5 +1,8 @@
 package service;
 
+import dto.BrokerAccountSummary;
+import dto.Order;
+import dto.OrderType;
 import exceptions.BrokerException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,7 +33,11 @@ public class Broker {
      * @param order - The order to be placed.
      */
     public void placeOrder(Order order) {
-        log.info("Placing order: " + order.toString());
+        if (order == null) {
+            return;
+        }
+
+        log.info("Placing order: " + order);
         switch (order.getOrderType()) {
             case BUY:
                 buyStock(order);

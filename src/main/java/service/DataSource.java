@@ -1,4 +1,8 @@
+package service;
+
 import com.opencsv.CSVReader;
+import dto.StockData;
+import dto.StockDataImpl;
 import exceptions.DataSourceException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,7 +18,7 @@ public class DataSource {
 
     private CSVReader reader;
 
-    private final List<File> fileNames;
+    private final List<File> files;
     private int currentFile = 0;
     private String[] currentFileHeaders;
 
@@ -23,8 +27,8 @@ public class DataSource {
      * @throws DataSourceException If something bad happens whilst initializing object.
      */
     public DataSource() throws DataSourceException {
-        fileNames = getFiles("src/main/resources/test_data/");
-        instantiateFile(fileNames.get(0));
+        files = getFiles("src/main/resources/test_data/");
+        instantiateFile(files.get(0));
     }
 
     /**
@@ -33,8 +37,8 @@ public class DataSource {
      * @throws DataSourceException If something bad happens whilst initializing object.
      */
     public DataSource(String testDataPath) throws DataSourceException {
-        fileNames = getFiles(testDataPath);
-        instantiateFile(fileNames.get(0));
+        files = getFiles(testDataPath);
+        instantiateFile(files.get(0));
     }
 
     /**
@@ -55,19 +59,19 @@ public class DataSource {
 
     /**
      * A method responsible for returning the next row of csv data.
-     * @return A string array representing the next row of csv data.
+     * @return A StockData data object, representing the next row of csv data.
      * Returns null if there is no more data in the csv.
      */
-    public String[] getData() {
-        String[] row = null;
-
+    public StockData getData() {
         try {
-            row = reader.readNext();
+            String[] row = reader.readNext();
+            return new StockDataImpl(getCurrentFileName(), Float.parseFloat(row[4]));
+
         } catch (Exception e) {
             log.error(e.getMessage());
         }
 
-        return row;
+        return null;
     }
 
     /**
@@ -76,7 +80,7 @@ public class DataSource {
     public void nextFile() throws DataSourceException {
         if (hasNextFile()) {
             currentFile += 1;
-            instantiateFile(fileNames.get(currentFile));
+            instantiateFile(files.get(currentFile));
         }
     }
 
@@ -85,7 +89,7 @@ public class DataSource {
      * @return True if there is a next file. False if not.
      */
     public boolean hasNextFile() {
-        return currentFile < fileNames.size() - 1;
+        return currentFile < files.size() - 1;
     }
 
     /**
@@ -122,6 +126,11 @@ public class DataSource {
 
     public String[] getCurrentFileHeaders() {
         return currentFileHeaders;
+    }
+
+    public String getCurrentFileName() {
+        String withSuffix = files.get(currentFile).getName();
+        return withSuffix.substring(0, withSuffix.length() - 4);
     }
 
     public int getCurrentFile() {

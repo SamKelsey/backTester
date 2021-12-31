@@ -1,6 +1,5 @@
 # BackTester
 
----
 A library for backtesting trading algorithms. 
 BackTester can be used to test your trading
 algorithms against years of historic data with
@@ -10,7 +9,6 @@ iterate!
 
 ## Usage
 
----
 To use with the default testing data, do the following.
 
 1. Create an algorithm that extends 

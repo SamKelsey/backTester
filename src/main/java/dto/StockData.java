@@ -1,12 +1,21 @@
 package dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
 /**
- * An interface to represent the data that is returned from the DataSource class.
+ * A class to represent the data that is returned from the DataSource class.
  */
+@Data
+@AllArgsConstructor
+@RequiredArgsConstructor
+public class StockData {
 
-public interface StockData {
+    @NonNull
+    private float stockPrice;
 
-    String getTicker();
-    float getStockPrice();
+    private String ticker;
 
 }

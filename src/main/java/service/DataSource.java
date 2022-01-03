@@ -1,8 +1,9 @@
 package service;
 
 import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import dto.StockData;
-import dto.StockDataImpl;
+import dto.mapper.StockDataMapper;
 import exceptions.DataSourceException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,17 +18,23 @@ import java.util.List;
 public class DataSource {
 
     private CSVReader reader;
+    private final StockDataMapper stockDataMapper;
 
     private final List<File> files;
-    private int currentFile = 0;
+    private int currentFileIndex = 0;
     private String[] currentFileHeaders;
 
     /**
      * Default constructor, using default test data.
      * @throws DataSourceException If something bad happens whilst initializing object.
      */
-    public DataSource() throws DataSourceException {
-        files = getFiles("src/main/resources/test_data/");
+    public DataSource() {
+        stockDataMapper = (dataRow) -> new StockData(Float.parseFloat(dataRow[4]), getCurrentFileName());
+        try {
+            files = getFiles("src/main/resources/test_data/");
+        } catch (IOException e) {
+            throw new DataSourceException("Failed to fetch default test data.", e);
+        }
         instantiateFile(files.get(0));
     }
 
@@ -36,8 +43,19 @@ public class DataSource {
      * @param testDataPath The directory that contains only custom datasets.
      * @throws DataSourceException If something bad happens whilst initializing object.
      */
-    public DataSource(String testDataPath) throws DataSourceException {
-        files = getFiles(testDataPath);
+    public DataSource(String testDataPath, StockDataMapper stockDataMapper) throws DataSourceException {
+        this.stockDataMapper = stockDataMapper;
+        try {
+            files = getFiles(testDataPath);
+        } catch (IOException err) {
+            throw new DataSourceException(
+                    String.format(
+                            "Failed to fetch custom test data at '%s'.",
+                            testDataPath
+                    ),
+                    err
+            );
+        }
         instantiateFile(files.get(0));
     }
 
@@ -46,13 +64,9 @@ public class DataSource {
      * @return boolean
      * @throws DataSourceException If something bad happens when reading the file.
      */
-    public boolean hasNextData() throws DataSourceException {
+    public boolean hasNextData() throws IOException {
         boolean res;
-        try {
-            res = reader.peek() != null;
-        } catch (IOException e) {
-            throw new DataSourceException("Error reading line from file.", e);
-        }
+        res = reader.peek() != null;
 
         return res;
     }
@@ -65,13 +79,24 @@ public class DataSource {
     public StockData getData() {
         try {
             String[] row = reader.readNext();
-            return new StockDataImpl(getCurrentFileName(), Float.parseFloat(row[4]));
+            StockData stockData = stockDataMapper.toStockData(row);
 
-        } catch (Exception e) {
-            log.error(e.getMessage());
+            /* If a ticker isn't provided, it's assumed to be the file name. */
+            if (stockData.getTicker() == null) {
+                stockData.setTicker(getCurrentFileName());
+            }
+
+            return stockData;
+
+        } catch (CsvValidationException | IOException err) {
+            throw new DataSourceException(
+                    String.format(
+                            "An error occurred whilst reading from test data file %s",
+                            getCurrentFile().getName()
+                    ),
+                    err
+            );
         }
-
-        return null;
     }
 
     /**
@@ -79,8 +104,8 @@ public class DataSource {
      */
     public void nextFile() throws DataSourceException {
         if (hasNextFile()) {
-            currentFile += 1;
-            instantiateFile(files.get(currentFile));
+            currentFileIndex += 1;
+            instantiateFile(files.get(currentFileIndex));
         }
     }
 
@@ -89,7 +114,7 @@ public class DataSource {
      * @return True if there is a next file. False if not.
      */
     public boolean hasNextFile() {
-        return currentFile < files.size() - 1;
+        return currentFileIndex < files.size() - 1;
     }
 
     /**
@@ -102,8 +127,14 @@ public class DataSource {
         try {
             reader = new CSVReader(new FileReader(file));
             currentFileHeaders = reader.readNext();
-        } catch (Exception e) {
-            throw new DataSourceException("An error occurred whilst instantiating a data file.", e);
+        } catch (IOException | CsvValidationException err) {
+            throw new DataSourceException(
+                    String.format(
+                            "An error occurred whilst initializing test data file %s",
+                            file.getName()
+                    ),
+                    err
+            );
         }
     }
 
@@ -112,14 +143,9 @@ public class DataSource {
      * @param dir Directory to be listed.
      * @return A list of Files in the given directory.
      */
-    public List<File> getFiles(String dir) throws DataSourceException {
+    private List<File> getFiles(String dir) throws IOException {
         List<File> files = new ArrayList<>();
-
-        try {
-            Files.list(new File(dir).toPath()).forEach(path -> files.add(path.toFile()));
-        } catch (IOException e) {
-            throw new DataSourceException("Empty test data directory provided.", e);
-        }
+        Files.list(new File(dir).toPath()).forEach(path -> files.add(path.toFile()));
 
         return files;
     }
@@ -129,11 +155,15 @@ public class DataSource {
     }
 
     public String getCurrentFileName() {
-        String withSuffix = files.get(currentFile).getName();
+        String withSuffix = files.get(currentFileIndex).getName();
         return withSuffix.substring(0, withSuffix.length() - 4);
     }
 
-    public int getCurrentFile() {
-        return currentFile;
+    public File getCurrentFile() {
+        return files.get(currentFileIndex);
+    }
+
+    public int getCurrentFileIndex() {
+        return currentFileIndex;
     }
 }

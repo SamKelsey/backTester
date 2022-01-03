@@ -4,6 +4,7 @@ import dto.StockData;
 import service.Broker;
 import service.DataSource;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,11 +26,11 @@ public class BackTester {
     /**
      * Main method to kick-off back-testing simulation.
      */
-    public float run() {
+    public float run() throws IOException {
 
         Map<String, Float> stockPrices = new HashMap<>();
 
-        while (dataSource.hasNextFile()) {
+        while (dataSource.getCurrentFile() != null) {
             StockData data = null;
             while (dataSource.hasNextData()) {
                 // Get row of data

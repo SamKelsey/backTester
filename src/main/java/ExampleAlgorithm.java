@@ -7,7 +7,7 @@ public class ExampleAlgorithm extends Algorithm {
 
     @Override
     public Order run(StockData data, BrokerAccountSummary brokerAccountSummary) {
-        if (brokerAccountSummary.getPortfolio().isEmpty()) {
+        if (!brokerAccountSummary.getPortfolio().containsKey(data.getTicker())) {
             return buy(100, data);
         }
         return null;
@@ -15,9 +15,5 @@ public class ExampleAlgorithm extends Algorithm {
 
     private Order buy(int units, StockData data) {
         return new Order(data.getTicker(), OrderType.BUY, units, data.getStockPrice());
-    }
-
-    private Order sell(int units, StockData data) {
-        return new Order(data.getTicker(), OrderType.SELL, units, data.getStockPrice());
     }
 }

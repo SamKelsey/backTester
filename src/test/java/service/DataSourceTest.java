@@ -1,8 +1,9 @@
 package service;
 
 import dto.StockData;
-import exceptions.DataSourceException;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -13,19 +14,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class DataSourceTest {
 
     @Test
-    void shouldInstantiateFile_whenConstructed() throws DataSourceException {
+    void shouldInstantiateFile_whenConstructed() throws IOException {
         DataSource dataSource = new DataSource();
         assertNotNull(dataSource.getCurrentFileHeaders());
     }
 
     @Test
-    void shouldInstantiateCustomFile_whenConstructed() throws DataSourceException {
+    void shouldInstantiateCustomFile_whenConstructed() throws IOException {
         DataSource dataSource = createDataSource();
         assertNotNull(dataSource.getCurrentFileHeaders());
     }
 
     @Test
-    void shouldReturnIfNextData_whenHasNextData() throws DataSourceException {
+    void shouldReturnIfNextData_whenHasNextData() throws IOException {
         DataSource dataSource = createDataSource();
 
         boolean expectTrue = dataSource.hasNextData();
@@ -38,14 +39,14 @@ public class DataSourceTest {
     }
 
     @Test
-    void shouldReturnData_whenGetData() throws DataSourceException {
+    void shouldReturnData_whenGetData() throws IOException {
         DataSource dataSource = createDataSource();
         StockData data = dataSource.getData();
         assertNotNull(data);
     }
 
     @Test
-    void shouldReturnNull_whenNoData() throws DataSourceException {
+    void shouldReturnNull_whenNoData() throws IOException {
         DataSource dataSource = createDataSource();
         dataSource.getData();
         dataSource.getData();
@@ -53,20 +54,27 @@ public class DataSourceTest {
     }
 
     @Test
-    void shouldReturnTrue_whenNextFile() throws DataSourceException {
+    void shouldUseFileName_whenNoTickerProvided() throws IOException {
+        DataSource dataSource = createDataSource();
+        StockData data = dataSource.getData();
+        assertEquals(dataSource.getCurrentFileName(), data.getTicker());
+    }
+
+    @Test
+    void shouldReturnTrue_whenNextFile() throws IOException {
         DataSource dataSource = createDataSource();
         assertTrue(dataSource.hasNextFile());
     }
 
     @Test
-    void shouldUseNextFile_whenNextFile() throws DataSourceException {
+    void shouldUseNextFile_whenNextFile() throws IOException {
         DataSource dataSource = createDataSource();
         dataSource.nextFile();
-        assertEquals(1, dataSource.getCurrentFile());
+        assertEquals(1, dataSource.getCurrentFileIndex());
     }
 
     @Test
-    void shouldReturnFileName_whenGetFileName() {
+    void shouldReturnFileName_whenGetFileName() throws IOException {
         DataSource dataSource = createDataSource();
 
         String actualName = dataSource.getCurrentFileName();
@@ -75,7 +83,9 @@ public class DataSourceTest {
         assertEquals(expectedName, actualName);
     }
 
-    private DataSource createDataSource() throws DataSourceException {
-        return new DataSource("src/test/resources/");
+    private DataSource createDataSource() throws IOException {
+        return new DataSource("src/test/resources/", (row) ->
+                new StockData(Float.parseFloat(row[6]))
+        );
     }
 }

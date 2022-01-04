@@ -7,28 +7,45 @@ only a few lines of code. Quickly see if your
 algorithm has potential or if you need to
 iterate!
 
-## Usage
+## Quickstart
 
-To use with the default testing data, do the following.
+To use with the default testing data, you need
+only 4 lines of code. Do the following steps:
 
-1. Create an algorithm that extends 
+1. Create an algorithm class that extends 
    [Algorithm](/src/main/java/Algorithm.java).
    See [ExampleAlgorithm](/src/main/java/ExampleAlgorithm.java)
-   for an example.
+   for a basic example.
+2. Instantiate a default instance of [DataSource](/src/main/java/service/DataSource.java).
 2. Instantiate an instance of [BackTester](/src/main/java/BackTester.java)
-   with a [DataSource](/src/main/java/service/DataSource.java)
-   and your Algorithm.
+   using your Algorithm and DataSource from steps 1 & 2.
 3. Call `backTester.run()` to kick-off the simulation.
 
 **Example**
 ```java
-DataSource dataSource = new DataSource();
-Algorithm algorithm = new ExampleAlgorithm();
-
-BackTester backTester = new BackTester(algorithm, dataSource);
-backTester.run();
+public class BackTesterExample {
+    
+   public void example() throws IOException, BackTesterException {
+       
+      Algorithm algorithm = new ExampleAlgorithm();
+      DataSource dataSource = new DataSource();
+      BackTester backTester = new BackTester(algorithm, dataSource);
+      BackTestResult result = backTester.run();
+      
+   }
+}
 ```
 
-// TODO: Edit above code block to show returned output of simulation.
-// Add documentation for specifying your own datasource.
+The above example will return a results POJO,
+with which you can view the effectiveness of your
+trading algorithm! :smiley:
+
+# Advanced uses
+
+BackTester also allows for you to try out your
+own algorithms against your own datasets! For
+more information on how to do this, visit our
+documentation.
+
+
 

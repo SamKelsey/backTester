@@ -3,6 +3,7 @@ package service;
 import dto.StockData;
 import exceptions.DataSourceException;
 import org.junit.jupiter.api.Test;
+import utils.TestUtils;
 
 import java.io.IOException;
 
@@ -22,13 +23,13 @@ public class DataSourceTest {
 
     @Test
     void shouldInitialiseCustomFile_whenConstructed() throws IOException {
-        DataSource dataSource = createDataSource();
+        DataSource dataSource = TestUtils.createDataSource();
         assertNotNull(dataSource.getCurrentFile());
     }
 
     @Test
     void shouldReturnIfNextData_whenHasNextData() throws IOException, DataSourceException {
-        DataSource dataSource = createDataSource();
+        DataSource dataSource = TestUtils.createDataSource();
 
         boolean expectTrue = dataSource.hasNextData();
         dataSource.getData();
@@ -41,14 +42,14 @@ public class DataSourceTest {
 
     @Test
     void shouldReturnData_whenGetData() throws IOException, DataSourceException {
-        DataSource dataSource = createDataSource();
+        DataSource dataSource = TestUtils.createDataSource();
         StockData data = dataSource.getData();
         assertNotNull(data);
     }
 
     @Test
     void shouldReturnNull_whenNoData() throws IOException, DataSourceException {
-        DataSource dataSource = createDataSource();
+        DataSource dataSource = TestUtils.createDataSource();
         dataSource.getData();
         dataSource.getData();
         assertNull(dataSource.getData());
@@ -56,14 +57,14 @@ public class DataSourceTest {
 
     @Test
     void shouldUseFileName_whenNoTickerProvided() throws IOException, DataSourceException {
-        DataSource dataSource = createDataSource();
+        DataSource dataSource = TestUtils.createDataSource();
         StockData data = dataSource.getData();
         assertEquals(dataSource.getCurrentFileName(), data.getTicker());
     }
 
     @Test
     void shouldReturnBool_whenNextFile() throws IOException {
-        DataSource dataSource = createDataSource();
+        DataSource dataSource = TestUtils.createDataSource();
 
         boolean expectTrue = dataSource.nextFile();
         boolean expectFalse = dataSource.nextFile();
@@ -74,17 +75,11 @@ public class DataSourceTest {
 
     @Test
     void shouldReturnFileName_whenGetFileName() throws IOException {
-        DataSource dataSource = createDataSource();
+        DataSource dataSource = TestUtils.createDataSource();
 
         String actualName = dataSource.getCurrentFileName();
         String expectedName = "test_data";
 
         assertEquals(expectedName, actualName);
-    }
-
-    private DataSource createDataSource() throws IOException {
-        return new DataSource("src/test/resources/", (row) ->
-                new StockData(Float.parseFloat(row[6]))
-        );
     }
 }

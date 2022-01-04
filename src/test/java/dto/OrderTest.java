@@ -1,6 +1,5 @@
-package service;
+package dto;
 
-import dto.Order;
 import org.junit.jupiter.api.Test;
 import utils.TestUtils;
 

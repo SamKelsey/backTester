@@ -1,3 +1,4 @@
+import dto.BackTestResult;
 import dto.BrokerAccountSummary;
 import dto.Order;
 import dto.StockData;
@@ -10,24 +11,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Main class to kick-off backtest simulations.
+ * Main class for running and analysing back-testing simulations.
  */
 public class BackTester {
 
     private final DataSource dataSource;
     private final Algorithm algorithm;
-    private final Broker broker;
 
     public BackTester(Algorithm algorithm, DataSource dataSource) {
         this.dataSource = dataSource;
         this.algorithm = algorithm;
-        this.broker = new Broker();
     }
 
     /**
-     * Main method to kick-off back-testing simulation.
+     * A method to kick-off a back-testing simulation.
+     * @return The percentage gain/loss of the simulation.
+     * @throws IOException If something bad happens whilst reading test data files.
+     * @throws BackTesterException If there is simulation error.
      */
-    public float run() throws IOException, BackTesterException {
+    public BackTestResult run() throws IOException, BackTesterException {
+        float startingBalance = 1_000_000f;
+        Broker broker = new Broker(startingBalance);
 
         Map<String, Float> stockPrices = new HashMap<>();
 
@@ -45,6 +49,9 @@ public class BackTester {
             }
         }
 
-        return broker.getTotalEquity(stockPrices);
+        return new BackTestResult(
+                startingBalance,
+                broker.getTotalEquity(stockPrices)
+        );
     }
 }

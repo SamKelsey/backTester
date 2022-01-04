@@ -16,16 +16,14 @@ import java.util.Map;
 @Slf4j
 public class Broker {
 
+    private final float startingBalance;
     private float cash;
-    private float totalEquity;
     private final Map<String, Integer> portfolio = new HashMap<>();
 
-    public Broker() {
-        this.cash = 1_000_000;
-    }
 
-    public Broker(int cash) {
+    public Broker(float cash) {
         this.cash = cash;
+        this.startingBalance = cash;
     }
 
     /**
@@ -93,13 +91,11 @@ public class Broker {
     public BrokerAccountSummary createAccountSummary() {
         return new BrokerAccountSummary(
                 portfolio,
-                cash
+                cash,
+                startingBalance
         );
     }
 
-    public float getCash() {
-        return cash;
-    }
 
     /**
      * A method to calculate the total equity of the broker account.
@@ -121,5 +117,13 @@ public class Broker {
 
     public Map<String, Integer> getPortfolio() {
         return portfolio;
+    }
+
+    public float getCash() {
+        return cash;
+    }
+
+    public float getStartingBalance() {
+        return startingBalance;
     }
 }

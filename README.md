@@ -40,7 +40,7 @@ The above example will return a results POJO,
 with which you can view the effectiveness of your
 trading algorithm! :smiley:
 
-# Advanced uses
+## Advanced uses
 
 BackTester also allows for you to try out your
 own algorithms against your own datasets! For

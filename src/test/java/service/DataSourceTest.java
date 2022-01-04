@@ -62,21 +62,14 @@ public class DataSourceTest {
     }
 
     @Test
-    void shouldReturn_whenHasNextFile() throws IOException, DataSourceException {
+    void shouldReturnBool_whenNextFile() throws IOException {
         DataSource dataSource = createDataSource();
-        boolean expectTrue = dataSource.hasNextFile();
-        dataSource.nextFile();
-        boolean expectFalse = dataSource.hasNextFile();
+
+        boolean expectTrue = dataSource.nextFile();
+        boolean expectFalse = dataSource.nextFile();
 
         assertTrue(expectTrue);
         assertFalse(expectFalse);
-    }
-
-    @Test
-    void shouldUseNextFile_whenNextFile() throws IOException, DataSourceException {
-        DataSource dataSource = createDataSource();
-        dataSource.nextFile();
-        assertEquals(1, dataSource.getCurrentFileIndex());
     }
 
     @Test

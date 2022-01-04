@@ -31,29 +31,20 @@ public class BackTester {
 
         Map<String, Float> stockPrices = new HashMap<>();
 
-        while (dataSource.getCurrentFile() != null) {
+        while (dataSource.nextFile()) {
             StockData data = null;
             while (dataSource.hasNextData()) {
-                // Get row of data
                 data = dataSource.getData();
-
-                // Get broker summary
                 BrokerAccountSummary summary = broker.createAccountSummary();
-
-                // Get verdict from algorithm
                 Order order = algorithm.run(data, summary);
-
-                // Carry out action on broker, decided by algorithm.
                 broker.placeOrder(order);
             }
 
             if (data != null) {
                 stockPrices.put(data.getTicker(), data.getStockPrice());
             }
-            dataSource.nextFile();
         }
 
-        // Return final total equity.
         return broker.getTotalEquity(stockPrices);
     }
 }

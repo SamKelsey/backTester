@@ -89,22 +89,23 @@ public class DataSource {
 
     /**
      * Method to increment onto the next data file.
-     * @throws DataSourceException If there is no next file.
+     * @return Whether or not a new file was successfully incremented onto.
      * @throws IOException If something bad happens whilst initialising the new file.
      */
-    public void nextFile() throws DataSourceException, IOException {
+    public boolean nextFile() throws IOException {
         if (!hasNextFile()) {
-            throw new DataSourceException("There is no next test data file.");
+            return false;
         }
         currentFileIndex += 1;
         instantiateFile(files.get(currentFileIndex));
+        return true;
     }
 
     /**
      * A method to tell if there is another set of data to run.
      * @return True, if there is a next file. False, if not.
      */
-    public boolean hasNextFile() {
+    private boolean hasNextFile() {
         return currentFileIndex < files.size() - 1;
     }
 

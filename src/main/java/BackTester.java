@@ -27,7 +27,7 @@ public class BackTester {
      * A method to kick-off a back-testing simulation.
      * @return The percentage gain/loss of the simulation.
      * @throws IOException If something bad happens whilst reading test data files.
-     * @throws BackTesterException If there is simulation error.
+     * @throws BackTesterException If there is a simulation error.
      */
     public BackTestResult run() throws IOException, BackTesterException {
         float startingBalance = 1_000_000f;

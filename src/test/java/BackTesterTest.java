@@ -1,4 +1,5 @@
 import dto.StockData;
+import exceptions.BackTesterException;
 import org.junit.jupiter.api.Test;
 import service.DataSource;
 
@@ -7,7 +8,7 @@ import java.io.IOException;
 public class BackTesterTest {
 
     @Test
-    void example() throws IOException {
+    void example() throws IOException, BackTesterException {
         DataSource dataSource = new DataSource();
         Algorithm algorithm = new ExampleAlgorithm();
 
@@ -17,7 +18,7 @@ public class BackTesterTest {
     }
 
     @Test
-    void exampleWithCustomDataSet() throws IOException {
+    void exampleWithCustomDataSet() throws IOException, BackTesterException {
         DataSource dataSource = new DataSource("src/test/resources/", (row) ->
                 new StockData(Float.parseFloat(row[6]))
         );

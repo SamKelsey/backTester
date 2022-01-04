@@ -1,6 +1,7 @@
 import dto.BrokerAccountSummary;
 import dto.Order;
 import dto.StockData;
+import exceptions.BackTesterException;
 import service.Broker;
 import service.DataSource;
 
@@ -26,7 +27,7 @@ public class BackTester {
     /**
      * Main method to kick-off back-testing simulation.
      */
-    public float run() throws IOException {
+    public float run() throws IOException, BackTesterException {
 
         Map<String, Float> stockPrices = new HashMap<>();
 

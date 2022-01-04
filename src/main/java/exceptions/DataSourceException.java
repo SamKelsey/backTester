@@ -1,6 +1,6 @@
 package exceptions;
 
-public class DataSourceException extends RuntimeException {
+public class DataSourceException extends BackTesterException {
 
     public DataSourceException(String message) {
         super(message);

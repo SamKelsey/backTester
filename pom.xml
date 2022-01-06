@@ -24,7 +24,7 @@
     </build>
 
     <groupId>com.samkelsey</groupId>
-    <artifactId>com.samkelsey.backtester</artifactId>
+    <artifactId>backtester</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>

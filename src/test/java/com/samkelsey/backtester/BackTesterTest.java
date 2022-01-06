@@ -1,9 +1,11 @@
-import dto.BackTestResult;
-import exceptions.BackTesterException;
+package com.samkelsey.backtester;
+
+import com.samkelsey.backtester.dto.BackTestResult;
+import com.samkelsey.backtester.exception.BackTesterException;
+import com.samkelsey.backtester.service.DataSource;
+import com.samkelsey.backtester.utils.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import service.DataSource;
-import utils.TestUtils;
 
 import java.io.IOException;
 

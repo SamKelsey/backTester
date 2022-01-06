@@ -1,4 +1,4 @@
-package dto;
+package com.samkelsey.backtester.dto;
 
 import org.junit.jupiter.api.Test;
 

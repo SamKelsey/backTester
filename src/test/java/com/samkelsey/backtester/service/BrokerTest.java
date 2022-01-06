@@ -1,11 +1,11 @@
-package service;
+package com.samkelsey.backtester.service;
 
-import dto.BrokerAccountSummary;
-import dto.Order;
-import dto.OrderType;
-import exceptions.BrokerException;
+import com.samkelsey.backtester.dto.BrokerAccountSummary;
+import com.samkelsey.backtester.dto.Order;
+import com.samkelsey.backtester.dto.OrderType;
+import com.samkelsey.backtester.exception.BrokerException;
+import com.samkelsey.backtester.utils.TestUtils;
 import org.junit.jupiter.api.Test;
-import utils.TestUtils;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,9 +1,9 @@
-package utils;
+package com.samkelsey.backtester.utils;
 
-import dto.Order;
-import dto.OrderType;
-import dto.StockData;
-import service.DataSource;
+import com.samkelsey.backtester.dto.Order;
+import com.samkelsey.backtester.dto.OrderType;
+import com.samkelsey.backtester.dto.StockData;
+import com.samkelsey.backtester.service.DataSource;
 
 import java.io.IOException;
 

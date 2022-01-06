@@ -13,11 +13,11 @@ To use with the default testing data, you need
 only 4 lines of code. Do the following steps:
 
 1. Create an algorithm class that extends 
-   [Algorithm](/src/main/java/Algorithm.java).
-   See [ExampleAlgorithm](/src/main/java/ExampleAlgorithm.java)
+   [Algorithm](/src/main/java/com/samkelsey/backtester/Algorithm.java).
+   See [ExampleAlgorithm](/src/main/java/com/samkelsey/backtester/ExampleAlgorithm.java)
    for a basic example.
-2. Instantiate a default instance of [DataSource](/src/main/java/service/DataSource.java).
-2. Instantiate an instance of [BackTester](/src/main/java/BackTester.java)
+2. Instantiate a default instance of [DataSource](/src/main/java/com/samkelsey/backtester/service/DataSource.java).
+2. Instantiate an instance of [BackTester](/src/main/java/com/samkelsey/backtester/BackTester.java)
    using your Algorithm and DataSource from steps 1 & 2.
 3. Call `backTester.run()` to kick-off the simulation.
 

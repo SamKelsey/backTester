@@ -1,7 +1,7 @@
-package dto;
+package com.samkelsey.backtester.dto;
 
+import com.samkelsey.backtester.utils.TestUtils;
 import org.junit.jupiter.api.Test;
-import utils.TestUtils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

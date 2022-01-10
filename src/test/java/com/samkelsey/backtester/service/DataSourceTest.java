@@ -16,15 +16,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class DataSourceTest {
 
     @Test
-    void shouldInitialiseFile_whenConstructed() throws IOException {
+    void shouldInitialiseFile_whenConstructed() throws IOException, DataSourceException {
         DataSource dataSource = new DataSource();
-        assertNotNull(dataSource.getCurrentFile());
+        assertNotNull(dataSource.getCurrentFileName());
     }
 
     @Test
-    void shouldInitialiseCustomFile_whenConstructed() throws IOException {
+    void shouldInitialiseCustomFile_whenConstructed() throws IOException, DataSourceException {
         DataSource dataSource = TestUtils.createDataSource();
-        assertNotNull(dataSource.getCurrentFile());
+        assertNotNull(dataSource.getCurrentFileName());
     }
 
     @Test
@@ -63,7 +63,7 @@ public class DataSourceTest {
     }
 
     @Test
-    void shouldReturnBool_whenNextFile() throws IOException {
+    void shouldReturnBool_whenNextFile() throws IOException, DataSourceException {
         DataSource dataSource = TestUtils.createDataSource();
 
         boolean expectTrue = dataSource.nextFile();
@@ -74,7 +74,7 @@ public class DataSourceTest {
     }
 
     @Test
-    void shouldReturnFileName_whenGetFileName() throws IOException {
+    void shouldReturnFileName_whenGetFileName() throws IOException, DataSourceException {
         DataSource dataSource = TestUtils.createDataSource();
 
         String actualName = dataSource.getCurrentFileName();

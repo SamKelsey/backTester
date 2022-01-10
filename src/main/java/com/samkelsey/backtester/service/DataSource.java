@@ -1,49 +1,51 @@
 package com.samkelsey.backtester.service;
 
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
 import com.samkelsey.backtester.dto.StockData;
 import com.samkelsey.backtester.dto.mapper.StockDataMapper;
 import com.samkelsey.backtester.exception.DataSourceException;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.File;
-import java.io.FileReader;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 @Slf4j
 public class DataSource {
 
-    private CSVReader reader;
+    private BufferedReader reader;
     private final StockDataMapper stockDataMapper;
+    private String[] filePaths = new String[]{
+            "/test_data/AAPL.csv",
+            "/test_data/DAL.csv",
+            "/test_data/KO.csv"
+    };
 
-    private final List<File> files;
     private int currentFileIndex = 0;
     private String[] currentFileHeaders;
+
 
     /**
      * Default constructor which will use default test data.
      * @throws IOException If something bad happens whilst initializing the object.
+     * @throws DataSourceException Occurs if there is a problem initialising the test data file.
      */
-    public DataSource() throws IOException {
+    public DataSource() throws IOException, DataSourceException {
         stockDataMapper = (dataRow) -> new StockData(Float.parseFloat(dataRow[4]), getCurrentFileName());
-        files = getFiles("src/main/resources/test_data/");
-        instantiateFile(files.get(0));
+        instantiateFile(filePaths[0]);
     }
 
     /**
      * Constructor for specifying custom test data.
-     * @param testDataPath The directory that contains <strong>only</strong> the custom test data.
-     * @param stockDataMapper An implementation of the StockDataMapper interface.
+     * @param stockDataMapper An implementation of the {@link com.samkelsey.backtester.dto.mapper.StockDataMapper} interface.
+     * @param filePaths Paths to all test data to be used.
      * @throws IOException If something bad happens whilst initializing the object.
+     * @throws DataSourceException Occurs if there is a problem initialising the test data file.
      */
-    public DataSource(String testDataPath, StockDataMapper stockDataMapper) throws IOException {
+    public DataSource(StockDataMapper stockDataMapper, String... filePaths) throws IOException, DataSourceException {
         this.stockDataMapper = stockDataMapper;
-        files = getFiles(testDataPath);
-        instantiateFile(files.get(0));
+        this.filePaths = filePaths;
+        instantiateFile(filePaths[0]);
     }
 
     /**
@@ -52,101 +54,115 @@ public class DataSource {
      * @throws IOException If something bad happens when reading the file.
      */
     public boolean hasNextData() throws IOException {
-        return reader.peek() != null;
+        int readAheadLimit = 100_000;
+        reader.mark(readAheadLimit);
+        String line = reader.readLine();
+        reader.reset();
+        return line != null;
     }
 
     /**
      * A method responsible for returning the next row of data.
-     * @return A StockData data object, representing the next row of csv data.
+     * @return {@link com.samkelsey.backtester.dto.StockData} data object, representing the next row of csv data.
+     *         Null, if there is no more data to be read.
      * @throws IOException If something bad happens whilst reading the data.
      * @throws DataSourceException If there is an issue with the validity of the data.
      */
     public StockData getData() throws IOException, DataSourceException {
-        try {
-            String[] row = reader.readNext();
-            if (row == null) {
-                return null;
-            }
-
-            StockData stockData = stockDataMapper.toStockData(row);
-
-            /* If a ticker isn't provided, it's assumed to be the file name. */
-            if (stockData.getTicker() == null) {
-                stockData.setTicker(getCurrentFileName());
-            }
-
-            return stockData;
-        } catch (CsvValidationException err) {
-            throw new DataSourceException(
-                    String.format(
-                            "An error occurred reading from test data named: %s",
-                            getCurrentFileName()
-                    ),
-                    err
-            );
+        String row = reader.readLine();
+        if (row == null) {
+            return null;
         }
+
+        StockData stockData = stockDataMapper.toStockData(formatCsvString(row));
+
+        /* If a ticker isn't provided, it's assumed to be the file name. */
+        if (stockData.getTicker() == null) {
+            stockData.setTicker(getCurrentFileName());
+        }
+
+        return stockData;
     }
 
     /**
      * Method to increment onto the next data file.
      * @return Whether or not a new file was successfully incremented onto.
      * @throws IOException If something bad happens whilst initialising the new file.
+     * @throws DataSourceException Occurs if there is a problem initialising the test data file.
      */
-    public boolean nextFile() throws IOException {
+    public boolean nextFile() throws IOException, DataSourceException {
         if (!hasNextFile()) {
             return false;
         }
         currentFileIndex += 1;
-        instantiateFile(files.get(currentFileIndex));
+        instantiateFile(filePaths[currentFileIndex]);
         return true;
     }
 
     /**
-     * A method to tell if there is another set of data to run.
+     * A method to tell if there is another test data file to run.
      * @return True, if there is a next file. False, if not.
      */
     private boolean hasNextFile() {
-        return currentFileIndex < files.size() - 1;
+        return currentFileIndex < filePaths.length - 1;
     }
 
     /**
      * A method responsible for initialising a new file in the class.
-     * This will set the reader on the new file and save the file's column headers.
-     * @param file The file to be initialised.
+     * This will set the reader on the new file and save the file's column headers to the object.
+     * @param  filepath The file to be initialised.
      * @throws IOException If something bad happens whilst trying to read the new file.
+     * @throws DataSourceException If the filepath does not exist.
      */
-    private void instantiateFile(File file) throws IOException {
-        reader = new CSVReader(new FileReader(file));
-        currentFileHeaders = reader.readNextSilently();
+    private void instantiateFile(String filepath) throws IOException, DataSourceException {
+        InputStream resourceStream = getClass().getResourceAsStream(filepath);
+        if (resourceStream == null) {
+            throw new DataSourceException(
+                    String.format("No file found at the following path: %s", filepath)
+            );
+        }
+        InputStreamReader isr = new InputStreamReader(resourceStream);
+        reader = new BufferedReader(isr);
+        currentFileHeaders = formatCsvString(reader.readLine());
     }
 
     /**
-     * Lists all files in a given directory.
-     * @param dir Directory to be listed.
-     * @return A list of Files in the given directory.
-     * @throws IOException If something bad happens whilst listing the directory.
+     * Responsible for transforming a csv string into an array of strings.
+     * @param s The string to be transformed.
+     * @return An array of string values, each representing a csv value from the passed string.
      */
-    private List<File> getFiles(String dir) throws IOException {
-        List<File> files = new ArrayList<>();
-        Files.list(new File(dir).toPath()).forEach(path -> files.add(path.toFile()));
+    private String[] formatCsvString(String s) {
+        String[] splitStrings = s.split(",");
+        for (int i = 0; i < splitStrings.length; i++) {
+            splitStrings[i] = splitStrings[i].trim();
+        }
 
-        return files;
+        return splitStrings;
     }
 
-    public String[] getCurrentFileHeaders() {
-        return currentFileHeaders;
-    }
+    /**
+     * A method to return the name the current data file, <strong>without</strong> it's suffix.
+     * @return The name of the current file being used by the datasource object.
+     * @throws DataSourceException If there is an error parsing the filename.
+     */
+    public String getCurrentFileName() throws DataSourceException {
+        char[] currPath = filePaths[currentFileIndex].toCharArray();
+        int start = -1;
+        int end = -1;
+        for (int i = currPath.length - 1; i > -1; i--) {
+            if (currPath[i] == '.') {
+                end = i - 1;
+            }
+            if (currPath[i] == '/') {
+                start = i + 1;
+                break;
+            }
+        }
 
-    public String getCurrentFileName() {
-        String withSuffix = files.get(currentFileIndex).getName();
-        return withSuffix.substring(0, withSuffix.length() - 4);
-    }
+        if (start == -1 || end == -1) {
+            throw new DataSourceException("Could not parse test data file name.");
+        }
 
-    public File getCurrentFile() {
-        return files.get(currentFileIndex);
-    }
-
-    public int getCurrentFileIndex() {
-        return currentFileIndex;
+        return String.valueOf(currPath, start, end - start + 1);
     }
 }

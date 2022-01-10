@@ -9,17 +9,17 @@ there are a few extra steps you need to follow.
 1. Create a class that extends
    [Algorithm](/src/main/java/com/samkelsey/backtester/Algorithm.java),
    then instantiate it.
-2. Create a directory in your project that holds
-   **only** your test data in csv files. Eg.
+2. Create a directory in your project that holds 
+   your test data in csv files. Eg.
    `/resources/test_data/`
-3. Create a class that extends StockData and
-   contains all the stock data fields you'd
+3. Create a class that extends [StockData](/src/main/java/com/samkelsey/backtester/dto/StockData.java)
+   and contains all the stock data fields you'd
    like your algorithm to use from your test
    data.
 4. Construct an instance of [DataSource](/src/main/java/com/samkelsey/backtester/service/DataSource.java), 
-   passing the path to your desired test data
-   and an implementation of [StockDataMapper](/src/main/java/com/samkelsey/backtester/dto/mapper/StockDataMapper.java)
-   as arguments *(in the example below, we use
+   passing both an implementation of [StockDataMapper](/src/main/java/com/samkelsey/backtester/dto/mapper/StockDataMapper.java)
+   and the paths to your desired test data
+   files as arguments *(in the example below, we use
    a lambda implementation of StockDataMapper.
    It only requires the data from the 6th index
    row in our test data. Yours might require

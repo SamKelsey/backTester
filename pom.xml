@@ -4,6 +4,51 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>com.github.samkelsey</groupId>
+    <artifactId>backtester</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>backtester</name>
+    <description>A common library for back-testing trading algorithms.</description>
+    <url>https://github.com/SamKelsey/backTester</url>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>samkelsey</id>
+            <name>Sam Kelsey</name>
+            <email>samjkelsey1@gmail.com</email>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <scm>
+        <developerConnection>scm:git:ssh://github.com/samkelsey/backtester.git</developerConnection>
+        <connection>${project.scm.developerConnection}</connection>
+        <url>${project.url}</url>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>samjkelsey1@gmail.com</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>samjkelsey1@gmail.com</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
     <build>
         <plugins>
             <plugin>
@@ -20,12 +65,34 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M5</version>
             </plugin>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-source</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
-
-    <groupId>com.samkelsey</groupId>
-    <artifactId>backtester</artifactId>
-    <version>1.0-SNAPSHOT</version>
 
     <properties>
         <java.version>17</java.version>

@@ -1,4 +1,4 @@
-package com.samkelsey.backtester.dto;
+package io.github.samkelsey.backtester.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,13 +1,13 @@
-package com.samkelsey.backtester;
+package io.github.samkelsey.backtester;
 
 
-import com.samkelsey.backtester.dto.BrokerAccountSummary;
-import com.samkelsey.backtester.dto.Order;
-import com.samkelsey.backtester.dto.StockData;
+import io.github.samkelsey.backtester.dto.BrokerAccountSummary;
+import io.github.samkelsey.backtester.dto.Order;
+import io.github.samkelsey.backtester.dto.StockData;
 
 /**
  * A base class to define trading algorithms.
- * <h3>To be implemented by user.</h3>
+ * <h2>To be implemented by user.</h2>
  */
 public abstract class Algorithm {
 

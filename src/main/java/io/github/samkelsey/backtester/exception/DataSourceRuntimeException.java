@@ -1,4 +1,4 @@
-package com.samkelsey.backtester.exception;
+package io.github.samkelsey.backtester.exception;
 
 public class DataSourceRuntimeException extends RuntimeException {
 

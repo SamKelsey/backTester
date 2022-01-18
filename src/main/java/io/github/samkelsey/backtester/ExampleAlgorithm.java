@@ -1,9 +1,9 @@
-package com.samkelsey.backtester;
+package io.github.samkelsey.backtester;
 
-import com.samkelsey.backtester.dto.BrokerAccountSummary;
-import com.samkelsey.backtester.dto.Order;
-import com.samkelsey.backtester.dto.OrderType;
-import com.samkelsey.backtester.dto.StockData;
+import io.github.samkelsey.backtester.dto.BrokerAccountSummary;
+import io.github.samkelsey.backtester.dto.Order;
+import io.github.samkelsey.backtester.dto.OrderType;
+import io.github.samkelsey.backtester.dto.StockData;
 
 /**
  * A very simple example of an Algorithm that could be used with the BackTester library.

@@ -1,12 +1,12 @@
-package com.samkelsey.backtester;
+package io.github.samkelsey.backtester;
 
-import com.samkelsey.backtester.dto.BackTestResult;
-import com.samkelsey.backtester.dto.BrokerAccountSummary;
-import com.samkelsey.backtester.dto.Order;
-import com.samkelsey.backtester.dto.StockData;
-import com.samkelsey.backtester.exception.BackTesterException;
-import com.samkelsey.backtester.service.Broker;
-import com.samkelsey.backtester.service.DataSource;
+import io.github.samkelsey.backtester.dto.BackTestResult;
+import io.github.samkelsey.backtester.dto.BrokerAccountSummary;
+import io.github.samkelsey.backtester.dto.Order;
+import io.github.samkelsey.backtester.dto.StockData;
+import io.github.samkelsey.backtester.exception.BackTesterException;
+import io.github.samkelsey.backtester.service.Broker;
+import io.github.samkelsey.backtester.service.DataSource;
 
 import java.io.IOException;
 import java.util.HashMap;

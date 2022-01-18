@@ -1,4 +1,4 @@
-package com.samkelsey.backtester.dto;
+package io.github.samkelsey.backtester.dto;
 
 public enum OrderType {
     BUY,

@@ -1,7 +1,7 @@
-package com.samkelsey.backtester.dto.mapper;
+package io.github.samkelsey.backtester.dto.mapper;
 
-import com.samkelsey.backtester.dto.StockData;
-import com.samkelsey.backtester.exception.DataSourceException;
+import io.github.samkelsey.backtester.dto.StockData;
+import io.github.samkelsey.backtester.exception.DataSourceException;
 
 /**
  * An interface for mapping the rows of test data from a string array to a StockData object.

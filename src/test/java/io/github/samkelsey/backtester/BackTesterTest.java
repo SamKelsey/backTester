@@ -1,12 +1,9 @@
-package com.samkelsey.backtester;
+package io.github.samkelsey.backtester;
 
-import com.samkelsey.backtester.utils.TestUtils;
-import io.github.samkelsey.backtester.Algorithm;
-import io.github.samkelsey.backtester.BackTester;
-import io.github.samkelsey.backtester.ExampleAlgorithm;
 import io.github.samkelsey.backtester.dto.BackTestResult;
 import io.github.samkelsey.backtester.exception.BackTesterException;
 import io.github.samkelsey.backtester.service.DataSource;
+import io.github.samkelsey.backtester.utils.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

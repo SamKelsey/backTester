@@ -1,4 +1,4 @@
-package com.samkelsey.backtester.utils;
+package io.github.samkelsey.backtester.utils;
 
 import io.github.samkelsey.backtester.dto.Order;
 import io.github.samkelsey.backtester.dto.OrderType;

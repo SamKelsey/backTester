@@ -1,4 +1,4 @@
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.samkelsey/backtester.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.samkelsey:%22backtester%22)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.samkelsey/backtester.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.samkelsey%22%20AND%20a:%22backtester%22)
 # BackTester
 
 A library for backtesting trading algorithms. 
@@ -7,6 +7,16 @@ algorithms against years of historic data with
 only a few lines of code. Quickly see if your
 algorithm has potential or if you need to
 iterate!
+
+## Maven dependency
+
+```xml
+<dependency>
+   <groupId>io.github.samkelsey</groupId>
+   <artifactId>backtester</artifactId>
+   <version>1.0.0</version>
+</dependency>
+```
 
 ## Quickstart
 

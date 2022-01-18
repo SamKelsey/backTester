@@ -1,3 +1,4 @@
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.samkelsey/backtester.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.samkelsey:%22backtester%22)
 # BackTester
 
 A library for backtesting trading algorithms. 

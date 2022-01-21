@@ -33,8 +33,7 @@
         <developerConnection>scm:git:${project.url}.git</developerConnection>
         <connection>${project.scm.developerConnection}</connection>
         <url>${project.url}</url>
-    <tag>v1.0.1</tag>
-  </scm>
+    </scm>
 
     <distributionManagement>
         <snapshotRepository>

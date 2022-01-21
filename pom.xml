@@ -4,7 +4,7 @@
 
     <groupId>io.github.samkelsey</groupId>
     <artifactId>backtester</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <name>backtester</name>
     <description>A common library for back-testing trading algorithms.</description>

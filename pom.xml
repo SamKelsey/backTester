@@ -4,7 +4,7 @@
 
     <groupId>io.github.samkelsey</groupId>
     <artifactId>backtester</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
 
     <name>backtester</name>
     <description>A common library for back-testing trading algorithms.</description>
@@ -38,17 +38,17 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>ossrh</id>
+            <id>nexus</id>
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
-            <id>ossrh</id>
+            <id>nexus</id>
             <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
 
     <properties>
-        <java.version>17</java.version>
+        <java.version>15</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <junit.jupiter.version>5.8.1</junit.jupiter.version>
@@ -153,7 +153,7 @@
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.8</version>
+                <version>1.6.7</version>
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>nexus</serverId>
@@ -161,30 +161,31 @@
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
-    <profiles>
-        <profile>
-            <id>releases</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+<!--    <profiles>-->
+<!--        <profile>-->
+<!--            <id>releases</id>-->
+<!--            <build>-->
+<!--                <plugins>-->
+<!--                    -->
+<!--                </plugins>-->
+<!--            </build>-->
+<!--        </profile>-->
+<!--    </profiles>-->
 </project>

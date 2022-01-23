@@ -20,6 +20,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
+          distribution: 'adopt'
           server-id: nexus # Value of the distributionManagement/repository/id field of the pom.xml
           server-username: ${{ secrets.NEXUS_USERNAME }} # env variable for username in deploy
           server-password: ${{ secrets.NEXUS_PASS }} # env variable for token in deploy

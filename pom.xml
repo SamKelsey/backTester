@@ -33,7 +33,6 @@
         <developerConnection>scm:git:${project.url}.git</developerConnection>
         <connection>${project.scm.developerConnection}</connection>
         <url>${project.url}</url>
-      <tag>v1.0.2</tag>
   </scm>
 
     <distributionManagement>
@@ -48,7 +47,7 @@
     </distributionManagement>
 
     <properties>
-        <java.version>15</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <junit.jupiter.version>5.8.1</junit.jupiter.version>

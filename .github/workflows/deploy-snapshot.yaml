@@ -20,8 +20,8 @@ jobs:
       - name: Publish package
         run: |
           mvn \
-          -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} \
-          deploy
+          deploy \
+          -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }}
         env:
           MAVEN_USERNAME: ${{ secrets.NEXUS_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.NEXUS_PASS }}

@@ -21,6 +21,9 @@ jobs:
           server-username: ${{ secrets.NEXUS_USERNAME }} # env variable for username in deploy
           server-password: ${{ secrets.NEXUS_PASS }} # env variable for token in deploy
       - name: Publish package
+        env:
+          MAVEN_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.NEXUS_PASS }}
         run: |
           mvn \
           deploy \

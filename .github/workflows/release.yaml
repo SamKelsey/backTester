@@ -17,16 +17,16 @@ jobs:
         with:
           ref: "master"
       - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
           java-version: 17
           distribution: 'adopt'
           server-id: nexus # Value of the distributionManagement/repository/id field of the pom.xml
-          server-username: ${{ secrets.NEXUS_USERNAME }} # env variable for username in deploy
-          server-password: ${{ secrets.NEXUS_PASS }} # env variable for token in deploy
+          server-username: MAVEN_USERNAME # env variable for username in deploy
+          server-password: MAVEN_CENTRAL_TOKEN # env variable for token in deploy
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }} # Value of the GPG private key to import
-          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }} # env variable for GPG private key passphrase
-      - name: Publish package
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE # env variable for GPG private key passphrase
+      - name: Publish new release
         run: |
           mvn release:prepare release:perform \
           -DgenerateBackupPoms=false \
@@ -35,5 +35,5 @@ jobs:
           -DdevelopmentVersion=${{ github.events.inputs.developmentVersion }}-SNAPSHOT
         env:
           MAVEN_USERNAME: ${{ secrets.NEXUS_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.NEXUS_PASS }}
+          MAVEN_CENTRAL_TOKEN: ${{ secrets.NEXUS_PASS }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PRIVATE_KEY }}

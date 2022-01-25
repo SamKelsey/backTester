@@ -25,6 +25,7 @@ jobs:
           MAVEN_USERNAME: ${{ secrets.NEXUS_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.NEXUS_PASS }}
         run: |
+          echo $MAVEN_USERNAME
           mvn \
           deploy \
           -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }}

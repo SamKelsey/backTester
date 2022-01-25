@@ -183,15 +183,4 @@
             </plugin>
         </plugins>
     </build>
-
-<!--    <profiles>-->
-<!--        <profile>-->
-<!--            <id>releases</id>-->
-<!--            <build>-->
-<!--                <plugins>-->
-<!--                    -->
-<!--                </plugins>-->
-<!--            </build>-->
-<!--        </profile>-->
-<!--    </profiles>-->
 </project>

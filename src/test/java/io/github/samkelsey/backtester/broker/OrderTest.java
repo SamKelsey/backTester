@@ -1,4 +1,4 @@
-package io.github.samkelsey.backtester.dto;
+package io.github.samkelsey.backtester.broker;
 
 import io.github.samkelsey.backtester.utils.TestUtils;
 import org.junit.jupiter.api.Test;

@@ -1,7 +1,5 @@
-package io.github.samkelsey.backtester.service;
+package io.github.samkelsey.backtester.datasource;
 
-import io.github.samkelsey.backtester.dto.StockData;
-import io.github.samkelsey.backtester.dto.mapper.StockDataMapper;
 import io.github.samkelsey.backtester.exception.DataSourceException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,7 +35,7 @@ public class DataSource {
 
     /**
      * Constructor for specifying custom test data.
-     * @param stockDataMapper An implementation of the {@link io.github.samkelsey.backtester.dto.mapper.StockDataMapper} interface.
+     * @param stockDataMapper An implementation of the {@link StockDataMapper} interface.
      * @param filePaths Paths to all test data to be used.
      * @throws IOException If something bad happens whilst initializing the object.
      * @throws DataSourceException Occurs if there is a problem initialising the test data file.
@@ -63,7 +61,7 @@ public class DataSource {
 
     /**
      * A method responsible for returning the next row of data.
-     * @return {@link io.github.samkelsey.backtester.dto.StockData} data object, representing the next row of csv data.
+     * @return {@link StockData} data object, representing the next row of csv data.
      *         Null, if there is no more data to be read.
      * @throws IOException If something bad happens whilst reading the data.
      * @throws DataSourceException If there is an issue with the validity of the data.

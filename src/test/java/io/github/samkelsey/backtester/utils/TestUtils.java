@@ -1,10 +1,10 @@
 package io.github.samkelsey.backtester.utils;
 
-import io.github.samkelsey.backtester.dto.Order;
-import io.github.samkelsey.backtester.dto.OrderType;
-import io.github.samkelsey.backtester.dto.StockData;
+import io.github.samkelsey.backtester.broker.Order;
+import io.github.samkelsey.backtester.broker.OrderType;
+import io.github.samkelsey.backtester.datasource.DataSource;
+import io.github.samkelsey.backtester.datasource.StockData;
 import io.github.samkelsey.backtester.exception.DataSourceException;
-import io.github.samkelsey.backtester.service.DataSource;
 
 import java.io.IOException;
 

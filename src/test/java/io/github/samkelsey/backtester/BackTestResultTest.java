@@ -1,4 +1,4 @@
-package io.github.samkelsey.backtester.dto;
+package io.github.samkelsey.backtester;
 
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +13,6 @@ public class BackTestResultTest {
                 1200
         );
 
-        assertEquals(20f, result.getPercentageChange());
+        assertEquals(20f, result.getTotalPercentageChange());
     }
 }

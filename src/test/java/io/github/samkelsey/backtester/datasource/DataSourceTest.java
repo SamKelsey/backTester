@@ -1,6 +1,5 @@
-package io.github.samkelsey.backtester.service;
+package io.github.samkelsey.backtester.datasource;
 
-import io.github.samkelsey.backtester.dto.StockData;
 import io.github.samkelsey.backtester.exception.DataSourceException;
 import io.github.samkelsey.backtester.utils.TestUtils;
 import org.junit.jupiter.api.Test;

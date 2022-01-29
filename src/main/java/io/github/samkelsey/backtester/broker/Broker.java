@@ -61,18 +61,16 @@ public class Broker {
 
         cash -= order.getOrderValue();
 
-        BrokerStockData data = portfolio.get(order.getTicker());
+        BrokerStockData stockData = portfolio.get(order.getTicker());
 
-        if (data == null) {
-            data = new BrokerStockData(
-                    order.getTicker(),
-                    order.getStockPrice(),
-                    order.getStockPrice(),
-                    order.getStockQty()
-            );
-            portfolio.put(order.getTicker(), data);
+        if (stockData == null) {
+            stockData = createNewBrokerStockData(order);
+            portfolio.put(order.getTicker(), stockData);
         } else {
-            data.setUnitsOwned(data.getUnitsOwned() + order.getStockQty());
+            stockData.setUnitsOwned(stockData.getUnitsOwned() + order.getStockQty());
+            stockData.setTotalPurchaseCost(
+                    stockData.getTotalPurchaseCost() + (order.getStockQty() * order.getStockPrice())
+            );
         }
     }
 
@@ -89,13 +87,13 @@ public class Broker {
 
         cash += order.getOrderValue();
 
+        BrokerStockData stockData = portfolio.get(order.getTicker());
         int ownedUnits = data.getUnitsOwned() - order.getStockQty();
 
-        if (ownedUnits == 0) {
-            portfolio.remove(order.getTicker());
-        } else {
-            data.setUnitsOwned(ownedUnits);
-        }
+        data.setUnitsOwned(ownedUnits);
+        data.setTotalSalesRevenue(
+                stockData.getTotalSalesRevenue() + (order.getStockQty() * order.getStockPrice())
+        );
     }
 
     /**
@@ -128,6 +126,16 @@ public class Broker {
         );
     }
 
+    private BrokerStockData createNewBrokerStockData(Order order) {
+        return new BrokerStockData(
+                order.getTicker(),
+                order.getStockPrice(),
+                order.getStockQty(),
+                order.getStockQty()* order.getStockPrice(),
+                0
+        );
+    }
+
 
     /**
      * A method to calculate the total equity of the broker account.
@@ -143,6 +151,19 @@ public class Broker {
         }
 
         return result + cash;
+    }
+
+    public Map<String, Float> getPercentageChanges() {
+        Map<String, Float> result = new HashMap<>();
+
+        for (String ticker : portfolio.keySet()) {
+            result.put(
+                    ticker,
+                    portfolio.get(ticker).getPercentageChange()
+            );
+        }
+
+        return result;
     }
 
     public Map<String, BrokerStockData> getPortfolio() {

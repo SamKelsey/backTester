@@ -13,8 +13,14 @@ import lombok.Data;
 public class BrokerStockData {
 
     private String ticker;
-    private float buyPrice;
     private float currentPrice;
     private int unitsOwned;
 
+    private float totalPurchaseCost;
+    private float totalSalesRevenue;
+
+    // Percentage gained/lost over the lifetime of trading this ticker.
+    public float getPercentageChange() {
+        return (((unitsOwned * currentPrice) + totalSalesRevenue) / totalPurchaseCost) * 100 - 100;
+    }
 }

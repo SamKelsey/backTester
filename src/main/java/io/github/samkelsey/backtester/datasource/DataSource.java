@@ -20,15 +20,14 @@ public class DataSource {
     };
 
     private int currentFileIndex = 0;
-    private String[] currentFileHeaders;
 
 
     /**
      * Default constructor which will use default test data.
-     * @throws IOException If something bad happens whilst initializing the object.
      * @throws DataSourceException Occurs if there is a problem initialising the test data file.
+     * @throws IOException If something bad happens whilst initialising the file.
      */
-    public DataSource() throws IOException, DataSourceException {
+    public DataSource() throws DataSourceException, IOException {
         stockDataMapper = (dataRow) -> new StockData(Float.parseFloat(dataRow[4]), getCurrentFileName());
         instantiateFile(filePaths[0]);
     }
@@ -37,10 +36,10 @@ public class DataSource {
      * Constructor for specifying custom test data.
      * @param stockDataMapper An implementation of the {@link StockDataMapper} interface.
      * @param filePaths Paths to all test data to be used.
-     * @throws IOException If something bad happens whilst initializing the object.
      * @throws DataSourceException Occurs if there is a problem initialising the test data file.
+     * @throws IOException If something bad happens whilst initialising the file.
      */
-    public DataSource(StockDataMapper stockDataMapper, String... filePaths) throws IOException, DataSourceException {
+    public DataSource(StockDataMapper stockDataMapper, String... filePaths) throws DataSourceException, IOException {
         this.stockDataMapper = stockDataMapper;
         this.filePaths = filePaths;
         instantiateFile(filePaths[0]);
@@ -72,7 +71,7 @@ public class DataSource {
             return null;
         }
 
-        StockData stockData = stockDataMapper.toStockData(formatCsvString(row));
+        StockData stockData = stockDataMapper.toStockData(csvStringToArray(row));
 
         /* If a ticker isn't provided, it's assumed to be the file name. */
         if (stockData.getTicker() == null) {
@@ -80,21 +79,6 @@ public class DataSource {
         }
 
         return stockData;
-    }
-
-    /**
-     * Method to increment onto the next data file.
-     * @return Whether or not a new file was successfully incremented onto.
-     * @throws IOException If something bad happens whilst initialising the new file.
-     * @throws DataSourceException Occurs if there is a problem initialising the test data file.
-     */
-    public boolean nextFile() throws IOException, DataSourceException {
-        if (!hasNextFile()) {
-            return false;
-        }
-        currentFileIndex += 1;
-        instantiateFile(filePaths[currentFileIndex]);
-        return true;
     }
 
     /**
@@ -106,13 +90,29 @@ public class DataSource {
     }
 
     /**
+     * Method to increment onto the next data file.
+     * @return Whether or not a new file was successfully incremented onto.
+     * @throws DataSourceException Occurs if there is a problem initialising the test data file.
+     * @throws IOException If something bad happens whilst initialising the file.
+     */
+    public boolean nextFile() throws DataSourceException, IOException {
+        if (!hasNextFile()) {
+            return false;
+        }
+        currentFileIndex += 1;
+        instantiateFile(filePaths[currentFileIndex]);
+        return true;
+    }
+
+
+    /**
      * A method responsible for initialising a new file in the class.
      * This will set the reader on the new file and save the file's column headers to the object.
      * @param  filepath The file to be initialised.
-     * @throws IOException If something bad happens whilst trying to read the new file.
      * @throws DataSourceException If the filepath does not exist.
+     * @throws IOException If something bad happens whilst reading from the file.
      */
-    private void instantiateFile(String filepath) throws IOException, DataSourceException {
+    private void instantiateFile(String filepath) throws DataSourceException, IOException {
         InputStream resourceStream = getClass().getResourceAsStream(filepath);
         if (resourceStream == null) {
             throw new DataSourceException(
@@ -121,7 +121,7 @@ public class DataSource {
         }
         InputStreamReader isr = new InputStreamReader(resourceStream);
         reader = new BufferedReader(isr);
-        currentFileHeaders = formatCsvString(reader.readLine());
+        reader.readLine();
     }
 
     /**
@@ -129,7 +129,7 @@ public class DataSource {
      * @param s The string to be transformed.
      * @return An array of string values, each representing a csv value from the passed string.
      */
-    private String[] formatCsvString(String s) {
+    private String[] csvStringToArray(String s) {
         String[] splitStrings = s.split(",");
         for (int i = 0; i < splitStrings.length; i++) {
             splitStrings[i] = splitStrings[i].trim();

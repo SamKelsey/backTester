@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class BackTesterTest {
 
     @Test
@@ -26,11 +28,23 @@ public class BackTesterTest {
     @Test
     void shouldReturnResult_whenCustomConfig() throws IOException, BackTesterException {
         DataSource dataSource = TestUtils.createDataSource();
-
         Algorithm algorithm = new ExampleAlgorithm();
-
         BackTester backTester = new BackTester(algorithm, dataSource);
+
         Broker result = backTester.run();
+
         Assertions.assertNotNull(result);
+    }
+
+    @Test
+    void shouldRunAllTestDataFiles_whenRun() throws IOException, BackTesterException {
+        DataSource dataSource = TestUtils.createDataSource();
+        Algorithm algorithm = new ExampleAlgorithm();
+        BackTester backTester = new BackTester(algorithm, dataSource);
+
+        Broker result = backTester.run();
+
+        assertTrue(result.getPortfolio().containsKey("test_data"));
+        assertTrue(result.getPortfolio().containsKey("test_data2"));
     }
 }

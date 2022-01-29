@@ -17,7 +17,7 @@ public class TestUtils {
         };
     }
 
-    public static DataSource createDataSource() throws IOException, DataSourceException {
+    public static DataSource createDataSource() throws DataSourceException, IOException {
         return new DataSource((row) ->
                 new StockData(Float.parseFloat(row[6])),
                 "/test_data.csv",

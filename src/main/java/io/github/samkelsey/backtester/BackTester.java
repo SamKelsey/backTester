@@ -10,7 +10,6 @@ import io.github.samkelsey.backtester.exception.BackTesterException;
 
 import java.io.IOException;
 
-
 /**
  * Main class for running and analysing back-testing simulations.
  */
@@ -34,7 +33,7 @@ public class BackTester {
         float startingBalance = 1_000_000f;
         Broker broker = new Broker(startingBalance);
 
-        while (dataSource.nextFile()) {
+        do {
             while (dataSource.hasNextData()) {
                 StockData data = dataSource.getData();
                 broker.refreshBroker(data);
@@ -42,7 +41,8 @@ public class BackTester {
                 Order order = algorithm.run(data, summary);
                 broker.placeOrder(order);
             }
-        }
+
+        } while (dataSource.nextFile());
 
         return broker;
     }

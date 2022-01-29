@@ -2,6 +2,7 @@ package io.github.samkelsey.backtester;
 
 import io.github.samkelsey.backtester.algorithm.Algorithm;
 import io.github.samkelsey.backtester.algorithm.ExampleAlgorithm;
+import io.github.samkelsey.backtester.broker.Broker;
 import io.github.samkelsey.backtester.datasource.DataSource;
 import io.github.samkelsey.backtester.exception.BackTesterException;
 import io.github.samkelsey.backtester.utils.TestUtils;
@@ -18,7 +19,7 @@ public class BackTesterTest {
         Algorithm algorithm = new ExampleAlgorithm();
 
         BackTester backTester = new BackTester(algorithm, dataSource);
-        BackTestResult result = backTester.run();
+        Broker result = backTester.run();
         Assertions.assertNotNull(result);
     }
 
@@ -29,7 +30,7 @@ public class BackTesterTest {
         Algorithm algorithm = new ExampleAlgorithm();
 
         BackTester backTester = new BackTester(algorithm, dataSource);
-        BackTestResult result = backTester.run();
+        Broker result = backTester.run();
         Assertions.assertNotNull(result);
     }
 }

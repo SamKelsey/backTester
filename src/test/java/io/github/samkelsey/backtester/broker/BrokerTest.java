@@ -1,12 +1,14 @@
 package io.github.samkelsey.backtester.broker;
 
+import io.github.samkelsey.backtester.broker.model.BrokerAccountSummary;
+import io.github.samkelsey.backtester.broker.model.Order;
+import io.github.samkelsey.backtester.broker.model.OrderType;
+import io.github.samkelsey.backtester.datasource.StockData;
 import io.github.samkelsey.backtester.exception.BrokerException;
 import io.github.samkelsey.backtester.utils.TestUtils;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import static io.github.samkelsey.backtester.broker.model.OrderType.BUY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -18,36 +20,29 @@ public class BrokerTest {
     void whenValidPurchase_shouldUpdateBrokerState() {
         int startingBalance = 1000;
         Broker broker = new Broker(startingBalance);
-        Order order = TestUtils.getValidOrder();
+        Order order = TestUtils.getValidOrder(BUY);
 
         broker.placeOrder(order);
 
         assertEquals(startingBalance - 200, broker.getCash());
         assertTrue(broker.getPortfolio().containsKey("AAPL"));
-        assertEquals(2, broker.getPortfolio().get("AAPL"));
+        assertEquals(2, broker.getPortfolio().get("AAPL").getUnitsOwned());
     }
 
     @Test
     void whenInsufficientFunds_shouldThrowException() {
         int startingBalance = 100;
         Broker broker = new Broker(startingBalance);
-        Order order = TestUtils.getValidOrder();
+        Order order = TestUtils.getValidOrder(BUY);
 
-        Throwable err = assertThrows(BrokerException.class, () -> broker.placeOrder(order));
-
-        assertEquals(
-                String.format("Insufficient funds to purchase %d units of %s.",
-                    order.getStockQty(),
-                    order.getTicker()),
-                err.getMessage()
-        );
+        assertThrows(BrokerException.class, () -> broker.placeOrder(order));
     }
 
     @Test
     void whenValidSale_shouldUpdateBrokerState() {
         int startingBalance = 1000;
         Broker broker = new Broker(startingBalance);
-        Order buyOrder = TestUtils.getValidOrder();
+        Order buyOrder = TestUtils.getValidOrder(BUY);
         Order sellOrder = TestUtils.getValidOrder(OrderType.SELL);
         sellOrder.setStockQty(buyOrder.getStockQty() - 1);
         broker.placeOrder(buyOrder);
@@ -58,20 +53,19 @@ public class BrokerTest {
                 (buyOrder.getStockQty() - sellOrder.getStockQty()) * sellOrder.getStockPrice()
         );
         assertEquals(expectedBalance, broker.getCash());
-        assertEquals(1, broker.getPortfolio().get("AAPL"));
+        assertEquals(1, broker.getPortfolio().get("AAPL").getUnitsOwned());
     }
 
     @Test
     void whenValidSale_shouldRemoveTicker() {
         int startingBalance = 1000;
         Broker broker = new Broker(startingBalance);
-        Order buyOrder = TestUtils.getValidOrder();
+        Order buyOrder = TestUtils.getValidOrder(BUY);
         Order sellOrder = TestUtils.getValidOrder(OrderType.SELL);
         broker.placeOrder(buyOrder);
 
         broker.placeOrder(sellOrder);
 
-        assertEquals(startingBalance, broker.getCash());
         assertFalse(broker.getPortfolio().containsKey("AAPL"));
     }
 
@@ -81,20 +75,13 @@ public class BrokerTest {
         Broker broker = new Broker(startingBalance);
         Order order = TestUtils.getValidOrder(OrderType.SELL);
 
-        Throwable err = assertThrows(BrokerException.class, () -> broker.placeOrder(order));
-
-        assertEquals(
-                String.format("Insufficient share units to sell %d units of %s",
-                        order.getStockQty(),
-                        order.getTicker()),
-                err.getMessage()
-        );
+        assertThrows(BrokerException.class, () -> broker.placeOrder(order));
     }
 
     @Test
-    void shouldReturnAccountSummary_whenCreateAccountSummary() {
+    void shouldReturnCorrectAccountSummary_whenCreateAccountSummary() {
         Broker broker = new Broker(1000);
-        Order order = TestUtils.getValidOrder(OrderType.BUY);
+        Order order = TestUtils.getValidOrder(BUY);
         broker.placeOrder(order);
 
         BrokerAccountSummary summary = broker.createAccountSummary();
@@ -104,15 +91,33 @@ public class BrokerTest {
     }
 
     @Test
-    void shouldCalculateTotalEquity_whenGetTotalEquity() {
-        Map<String, Float> stockPrices = new HashMap<>();
-        stockPrices.put("AAPL", 300f);
+    void shouldUpdateCurrPrices_whenRefreshBroker() {
+        Broker broker = createPopulatedBroker();
+        StockData stockData = new StockData(1000,"AAPL");
 
+        broker.refreshBroker(stockData);
+
+        assertEquals(1000, broker.getPortfolio().get("AAPL").getCurrentPrice());
+    }
+
+    @Test
+    void shouldCalculateTotalEquity_whenGetTotalEquity() {
         Broker broker = new Broker(1000);
-        Order order = TestUtils.getValidOrder(OrderType.BUY);
+        Order order = TestUtils.getValidOrder(BUY);
+        broker.placeOrder(order);
+        StockData newData = new StockData(1000, "AAPL");
+        broker.refreshBroker(newData);
+
+        float totalEquity = broker.getTotalEquity();
+
+        assertEquals(2800, totalEquity);
+    }
+
+    private Broker createPopulatedBroker() {
+        Broker broker = new Broker(1000);
+        Order order = TestUtils.getValidOrder(BUY);
         broker.placeOrder(order);
 
-        float totalEquity = broker.getTotalEquity(stockPrices);
-        assertEquals(1400, totalEquity);
+        return broker;
     }
 }

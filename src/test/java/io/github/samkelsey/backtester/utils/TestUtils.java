@@ -1,7 +1,7 @@
 package io.github.samkelsey.backtester.utils;
 
-import io.github.samkelsey.backtester.broker.Order;
-import io.github.samkelsey.backtester.broker.OrderType;
+import io.github.samkelsey.backtester.broker.model.Order;
+import io.github.samkelsey.backtester.broker.model.OrderType;
 import io.github.samkelsey.backtester.datasource.DataSource;
 import io.github.samkelsey.backtester.datasource.StockData;
 import io.github.samkelsey.backtester.exception.DataSourceException;
@@ -9,10 +9,6 @@ import io.github.samkelsey.backtester.exception.DataSourceException;
 import java.io.IOException;
 
 public class TestUtils {
-
-    public static Order getValidOrder() {
-        return getValidOrder(OrderType.BUY);
-    }
 
     public static Order getValidOrder(OrderType type) {
         return switch (type) {

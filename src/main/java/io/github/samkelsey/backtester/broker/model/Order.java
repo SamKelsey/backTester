@@ -1,4 +1,4 @@
-package io.github.samkelsey.backtester.broker;
+package io.github.samkelsey.backtester.broker.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

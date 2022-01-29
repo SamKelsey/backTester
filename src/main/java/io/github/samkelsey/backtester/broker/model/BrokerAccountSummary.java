@@ -1,4 +1,4 @@
-package io.github.samkelsey.backtester.broker;
+package io.github.samkelsey.backtester.broker.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,7 +16,7 @@ import java.util.Map;
 public class BrokerAccountSummary {
 
     @NonNull
-    private Map<String, Integer> portfolio;
+    private Map<String, BrokerStockData> portfolio;
 
     @NonNull
     private float cash;

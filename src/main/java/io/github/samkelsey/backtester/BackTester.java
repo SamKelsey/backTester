@@ -2,8 +2,8 @@ package io.github.samkelsey.backtester;
 
 import io.github.samkelsey.backtester.algorithm.Algorithm;
 import io.github.samkelsey.backtester.broker.Broker;
-import io.github.samkelsey.backtester.broker.BrokerAccountSummary;
-import io.github.samkelsey.backtester.broker.Order;
+import io.github.samkelsey.backtester.broker.model.BrokerAccountSummary;
+import io.github.samkelsey.backtester.broker.model.Order;
 import io.github.samkelsey.backtester.datasource.DataSource;
 import io.github.samkelsey.backtester.datasource.StockData;
 import io.github.samkelsey.backtester.exception.BackTesterException;
@@ -38,7 +38,7 @@ public class BackTester {
      * @throws IOException If something bad happens whilst reading test data files.
      * @throws BackTesterException If there is a simulation error.
      */
-    public BackTestResult run() throws IOException, BackTesterException {
+    public Broker run() throws IOException, BackTesterException {
         float startingBalance = 1_000_000f;
         Broker broker = new Broker(startingBalance);
 
@@ -50,6 +50,7 @@ public class BackTester {
 
             while (dataSource.hasNextData()) {
                 data = dataSource.getData();
+                broker.refreshBroker(data);
                 BrokerAccountSummary summary = broker.createAccountSummary();
                 Order order = algorithm.run(data, summary);
                 broker.placeOrder(order);
@@ -61,9 +62,6 @@ public class BackTester {
             }
         }
 
-        return new BackTestResult(
-                startingBalance,
-                broker.getTotalEquity(stockPrices)
-        );
+        return broker;
     }
 }

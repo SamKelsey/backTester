@@ -1,8 +1,8 @@
 package io.github.samkelsey.backtester.algorithm;
 
-import io.github.samkelsey.backtester.broker.BrokerAccountSummary;
-import io.github.samkelsey.backtester.broker.Order;
-import io.github.samkelsey.backtester.broker.OrderType;
+import io.github.samkelsey.backtester.broker.model.BrokerAccountSummary;
+import io.github.samkelsey.backtester.broker.model.Order;
+import io.github.samkelsey.backtester.broker.model.OrderType;
 import io.github.samkelsey.backtester.datasource.StockData;
 
 /**

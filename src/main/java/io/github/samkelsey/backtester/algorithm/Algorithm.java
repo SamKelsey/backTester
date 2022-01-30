@@ -3,7 +3,7 @@ package io.github.samkelsey.backtester.algorithm;
 
 import io.github.samkelsey.backtester.broker.model.BrokerAccountSummary;
 import io.github.samkelsey.backtester.broker.model.Order;
-import io.github.samkelsey.backtester.datasource.StockData;
+import io.github.samkelsey.backtester.datasource.model.StockData;
 
 /**
  * A base class to define trading algorithms.

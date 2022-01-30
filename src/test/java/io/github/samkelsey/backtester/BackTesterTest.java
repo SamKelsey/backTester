@@ -3,7 +3,7 @@ package io.github.samkelsey.backtester;
 import io.github.samkelsey.backtester.algorithm.Algorithm;
 import io.github.samkelsey.backtester.algorithm.ExampleAlgorithm;
 import io.github.samkelsey.backtester.broker.Broker;
-import io.github.samkelsey.backtester.datasource.DataSource;
+import io.github.samkelsey.backtester.datasource.DataSourceImpl;
 import io.github.samkelsey.backtester.exception.BackTesterException;
 import io.github.samkelsey.backtester.utils.TestUtils;
 import org.junit.jupiter.api.Assertions;
@@ -17,7 +17,7 @@ public class BackTesterTest {
 
     @Test
     void shouldReturnResult_whenDefaultConfig() throws IOException, BackTesterException {
-        DataSource dataSource = new DataSource();
+        DataSourceImpl dataSource = new DataSourceImpl();
         Algorithm algorithm = new ExampleAlgorithm();
 
         BackTester backTester = new BackTester(algorithm, dataSource);
@@ -27,7 +27,7 @@ public class BackTesterTest {
 
     @Test
     void shouldReturnResult_whenCustomConfig() throws IOException, BackTesterException {
-        DataSource dataSource = TestUtils.createDataSource();
+        DataSourceImpl dataSource = TestUtils.createDataSource();
         Algorithm algorithm = new ExampleAlgorithm();
         BackTester backTester = new BackTester(algorithm, dataSource);
 
@@ -38,7 +38,7 @@ public class BackTesterTest {
 
     @Test
     void shouldRunAllTestDataFiles_whenRun() throws IOException, BackTesterException {
-        DataSource dataSource = TestUtils.createDataSource();
+        DataSourceImpl dataSource = TestUtils.createDataSource();
         Algorithm algorithm = new ExampleAlgorithm();
         BackTester backTester = new BackTester(algorithm, dataSource);
 

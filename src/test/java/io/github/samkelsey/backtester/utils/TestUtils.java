@@ -2,8 +2,8 @@ package io.github.samkelsey.backtester.utils;
 
 import io.github.samkelsey.backtester.broker.model.Order;
 import io.github.samkelsey.backtester.broker.model.OrderType;
-import io.github.samkelsey.backtester.datasource.DataSource;
-import io.github.samkelsey.backtester.datasource.StockData;
+import io.github.samkelsey.backtester.datasource.DataSourceImpl;
+import io.github.samkelsey.backtester.datasource.model.StockData;
 import io.github.samkelsey.backtester.exception.DataSourceException;
 
 import java.io.IOException;
@@ -17,11 +17,18 @@ public class TestUtils {
         };
     }
 
-    public static DataSource createDataSource() throws DataSourceException, IOException {
-        return new DataSource((row) ->
+    public static DataSourceImpl createDataSource() throws DataSourceException, IOException {
+        return new DataSourceImpl((row) ->
                 new StockData(Float.parseFloat(row[6])),
                 "/test_data.csv",
-                        "/test_data2.csv"
-                );
+                "/test_data2.csv"
+        );
+    }
+
+    public static DataSourceImpl createInitialisedDataSource() throws DataSourceException, IOException {
+        DataSourceImpl dataSource = createDataSource();
+        dataSource.nextFile();
+
+        return dataSource;
     }
 }

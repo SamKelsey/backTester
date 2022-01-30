@@ -1,4 +1,4 @@
-package io.github.samkelsey.backtester.datasource;
+package io.github.samkelsey.backtester.datasource.model;
 
 import io.github.samkelsey.backtester.exception.DataSourceException;
 

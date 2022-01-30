@@ -3,7 +3,7 @@ package io.github.samkelsey.backtester.algorithm;
 import io.github.samkelsey.backtester.broker.model.BrokerAccountSummary;
 import io.github.samkelsey.backtester.broker.model.Order;
 import io.github.samkelsey.backtester.broker.model.OrderType;
-import io.github.samkelsey.backtester.datasource.StockData;
+import io.github.samkelsey.backtester.datasource.model.StockData;
 
 /**
  * A very simple example of an Algorithm that could be used with the BackTester library.

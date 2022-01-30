@@ -4,7 +4,7 @@ import io.github.samkelsey.backtester.broker.model.BrokerAccountSummary;
 import io.github.samkelsey.backtester.broker.model.BrokerStockData;
 import io.github.samkelsey.backtester.broker.model.Order;
 import io.github.samkelsey.backtester.broker.model.OrderType;
-import io.github.samkelsey.backtester.datasource.StockData;
+import io.github.samkelsey.backtester.datasource.model.StockData;
 import io.github.samkelsey.backtester.exception.BrokerException;
 import io.github.samkelsey.backtester.utils.TestUtils;
 import org.junit.jupiter.api.Test;

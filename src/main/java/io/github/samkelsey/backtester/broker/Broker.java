@@ -28,7 +28,7 @@ public class Broker {
     }
 
     /**
-     * A method to mock placing an order with a real broker.
+     * A method to place an order with the broker.
      * @param order The order to be placed.
      */
     public void placeOrder(Order order) {

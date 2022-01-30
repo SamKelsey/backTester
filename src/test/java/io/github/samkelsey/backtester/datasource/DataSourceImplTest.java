@@ -17,10 +17,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class DataSourceImplTest {
 
     @Test
-    void shouldThrowError_whenNoFileInitialised() throws DataSourceException, IOException {
+    void shouldThrowError_whenNoFileInitialised() {
         DataSourceImpl dataSource = new DataSourceImpl();
 
-        assertThrows(DataSourceException.class, dataSource::getCurrentFileName);
         assertThrows(DataSourceException.class, dataSource::getData);
     }
 
@@ -56,27 +55,18 @@ public class DataSourceImplTest {
     void shouldUseFileName_whenNoTickerProvided() throws IOException, DataSourceException {
         DataSourceImpl dataSource = TestUtils.createInitialisedDataSource();
         StockData data = dataSource.getData();
-        assertEquals(dataSource.getCurrentFileName(), data.getTicker());
+        assertEquals("test_data", data.getTicker());
     }
 
     @Test
-    void shouldReturnBool_whenNextFile() throws IOException, DataSourceException {
+    void shouldReturnBool_whenHasNextFile() throws IOException, DataSourceException {
         DataSourceImpl dataSource = TestUtils.createInitialisedDataSource();
 
-        boolean expectTrue = dataSource.nextFile();
-        boolean expectFalse = dataSource.nextFile();
+        boolean expectTrue = dataSource.hasNextFile();
+        dataSource.nextFile();
+        boolean expectFalse = dataSource.hasNextFile();
 
         assertTrue(expectTrue);
         assertFalse(expectFalse);
-    }
-
-    @Test
-    void shouldReturnFileName_whenGetFileName() throws IOException, DataSourceException {
-        DataSourceImpl dataSource = TestUtils.createInitialisedDataSource();
-
-        String actualName = dataSource.getCurrentFileName();
-        String expectedName = "test_data";
-
-        assertEquals(expectedName, actualName);
     }
 }

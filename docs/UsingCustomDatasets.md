@@ -6,12 +6,12 @@ wish! See how your algorithm would perform
 against your favourite stock! To do this, 
 there are a few extra steps you need to follow.
 
-1. Create a class that extends
-   [Algorithm](/src/main/java/io/github/samkelsey/backtester/algorithm/Algorithm.java),
-   then instantiate it.
-2. Create a directory in your project that holds 
+1. Create a directory in your project that holds
    your test data in csv files. Eg.
    `/resources/test_data/`
+2. Create a class that implements
+   [Algorithm](/src/main/java/io/github/samkelsey/backtester/algorithm/Algorithm.java),
+   then instantiate it.
 3. Create a class that extends [StockData](/src/main/java/io/github/samkelsey/backtester/datasource/model/StockData.java)
    and contains all the stock data fields you'd
    like your algorithm to use from your test
@@ -28,15 +28,15 @@ there are a few extra steps you need to follow.
    `run()` method on it, to get your results.
 ```java
 public class CustomDataExample {
-    
-    public void example() {
-       Algorithm algorithm = new ExampleAlgorithm();
-       DataSource dataSource = new DataSource("path/to/test/data/", (row) ->
-               new MyStockData(Float.parseFloat(row[6]))
-       );
 
-       BackTester backTester = new BackTester(algorithm, dataSource);
-       Broker result = backTester.run();
-    }
+   public static void main(String[] args) throws BackTesterException, IOException {
+      Algorithm algorithm = new ExampleAlgorithm();
+      DataSource dataSource = new DataSourceImpl();
+      
+      BackTester backTester = new BackTester(algorithm, dataSource);
+      
+      BrokerReader broker = backTester.run();
+      broker.getPortfolio();
+   }
 }
 ```

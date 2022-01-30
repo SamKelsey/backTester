@@ -22,7 +22,7 @@ public class BrokerTest {
     @Test
     void whenValidPurchase_shouldUpdateBrokerState() {
         int startingBalance = 1000;
-        Broker broker = new Broker(startingBalance);
+        BrokerImpl broker = new BrokerImpl(startingBalance);
         Order order = TestUtils.getValidOrder(BUY);
 
         broker.placeOrder(order);
@@ -38,7 +38,7 @@ public class BrokerTest {
     @Test
     void whenInsufficientFunds_shouldThrowException() {
         int startingBalance = 100;
-        Broker broker = new Broker(startingBalance);
+        BrokerImpl broker = new BrokerImpl(startingBalance);
         Order order = TestUtils.getValidOrder(BUY);
 
         assertThrows(BrokerException.class, () -> broker.placeOrder(order));
@@ -47,7 +47,7 @@ public class BrokerTest {
     @Test
     void whenValidSale_shouldUpdateBrokerState() {
         int startingBalance = 1000;
-        Broker broker = new Broker(startingBalance);
+        BrokerImpl broker = new BrokerImpl(startingBalance);
         Order buyOrder = TestUtils.getValidOrder(BUY);
         Order sellOrder = TestUtils.getValidOrder(OrderType.SELL);
         sellOrder.setStockQty(buyOrder.getStockQty() - 1);
@@ -71,7 +71,7 @@ public class BrokerTest {
     @Test
     void whenInsufficientStock_shouldThrowException() {
         int startingBalance = 100;
-        Broker broker = new Broker(startingBalance);
+        BrokerImpl broker = new BrokerImpl(startingBalance);
         Order order = TestUtils.getValidOrder(OrderType.SELL);
 
         assertThrows(BrokerException.class, () -> broker.placeOrder(order));
@@ -79,7 +79,7 @@ public class BrokerTest {
 
     @Test
     void shouldReturnCorrectAccountSummary_whenCreateAccountSummary() {
-        Broker broker = new Broker(1000);
+        BrokerImpl broker = new BrokerImpl(1000);
         Order order = TestUtils.getValidOrder(BUY);
         broker.placeOrder(order);
 
@@ -91,7 +91,7 @@ public class BrokerTest {
 
     @Test
     void shouldUpdateCurrPrices_whenRefreshBroker() {
-        Broker broker = createPopulatedBroker();
+        BrokerImpl broker = createPopulatedBroker();
         StockData stockData = new StockData(1000,"AAPL");
 
         broker.refreshBroker(stockData);
@@ -101,7 +101,7 @@ public class BrokerTest {
 
     @Test
     void shouldCalculateTotalEquity_whenGetTotalEquity() {
-        Broker broker = new Broker(1000);
+        BrokerImpl broker = new BrokerImpl(1000);
         Order order = TestUtils.getValidOrder(BUY);
         broker.placeOrder(order);
         StockData newData = new StockData(1000, "AAPL");
@@ -115,7 +115,7 @@ public class BrokerTest {
     @Test
     void shouldReturnPercentageChanges_whenGetPercentageChanges() {
         // Buy
-        Broker broker = createPopulatedBroker();
+        BrokerImpl broker = createPopulatedBroker();
         StockData refreshData = new StockData(120, "AAPL");
         broker.refreshBroker(refreshData);
 
@@ -136,8 +136,8 @@ public class BrokerTest {
         assertEquals(8.75f, percentageChanges.get("AAPL"));
     }
 
-    private Broker createPopulatedBroker() {
-        Broker broker = new Broker(1000);
+    private BrokerImpl createPopulatedBroker() {
+        BrokerImpl broker = new BrokerImpl(1000);
         Order order = TestUtils.getValidOrder(BUY);
         broker.placeOrder(order);
 

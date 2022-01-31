@@ -34,7 +34,7 @@ jobs:
           git config --global user.name "Github Actions"
       - name: Publish new release
         run: |
-          mvn "release:prepare release:perform -DgenerateBackupPoms=false -Dtag=v$releaseVersion -DreleaseVersion=$releaseVersion -DdevelopmentVersion=$developmentVersion-SNAPSHOT"
+          mvn release:prepare release:perform -DgenerateBackupPoms=false -Dtag=v${{github.event.inputs.releaseVersion}} -DreleaseVersion=${{github.event.inputs.releaseVersion}} -DdevelopmentVersion=${{github.event.inputs.developmentVersion}}-SNAPSHOT"
         env:
           MAVEN_USERNAME: ${{ secrets.NEXUS_USERNAME }}
           MAVEN_CENTRAL_TOKEN: ${{ secrets.NEXUS_PASS }}

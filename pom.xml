@@ -4,7 +4,7 @@
 
     <groupId>io.github.samkelsey</groupId>
     <artifactId>backtester</artifactId>
-    <version>1.1.2</version>
+    <version>1.1.3-SNAPSHOT</version>
 
     <name>backtester</name>
     <description>A common library for back-testing trading algorithms.</description>
@@ -33,7 +33,7 @@
         <developerConnection>scm:git:${project.url}.git</developerConnection>
         <connection>${project.scm.developerConnection}</connection>
         <url>${project.url}</url>
-    <tag>v1.1.2</tag>
+    <tag>v</tag>
   </scm>
 
     <distributionManagement>

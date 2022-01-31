@@ -34,9 +34,9 @@ jobs:
         run: |
           mvn release:prepare release:perform \
           -DgenerateBackupPoms=false \
-          -Dtag=v${{ github.events.inputs.releaseVersion }} \
-          -DreleaseVersion=${{ github.events.inputs.releaseVersion }} \
-          -DdevelopmentVersion=${{ github.events.inputs.developmentVersion }}-SNAPSHOT
+          -Dtag=v${{ inputs.releaseVersion }} \
+          -DreleaseVersion=${{ inputs.releaseVersion }} \
+          -DdevelopmentVersion=${{ inputs.developmentVersion }}-SNAPSHOT
         env:
           MAVEN_USERNAME: ${{ secrets.NEXUS_USERNAME }}
           MAVEN_CENTRAL_TOKEN: ${{ secrets.NEXUS_PASS }}

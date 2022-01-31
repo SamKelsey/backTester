@@ -14,7 +14,7 @@ iterate!
 <dependency>
    <groupId>io.github.samkelsey</groupId>
    <artifactId>backtester</artifactId>
-   <version>1.0.0</version>
+   <version>${backtester.version}</version>
 </dependency>
 ```
 

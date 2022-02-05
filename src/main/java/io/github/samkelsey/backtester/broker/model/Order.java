@@ -1,13 +1,15 @@
 package io.github.samkelsey.backtester.broker.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Data class to define an order to be placed.
  */
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class Order {
 

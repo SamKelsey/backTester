@@ -78,7 +78,7 @@ public class BrokerTest {
     }
 
     @Test
-    void shouldReturnCorrectAccountSummary_whenCreateAccountSummary() {
+    void whenCreateAccountSummary_shouldReturnCorrectAccountSummary() {
         BrokerImpl broker = new BrokerImpl(1000);
         Order order = TestUtils.getValidOrder(BUY);
         broker.placeOrder(order);
@@ -90,7 +90,7 @@ public class BrokerTest {
     }
 
     @Test
-    void shouldUpdateCurrPrices_whenRefreshBroker() {
+    void whenRefreshBroker_shouldUpdateCurrPrices() {
         BrokerImpl broker = createPopulatedBroker();
         StockData stockData = new StockData(1000,"AAPL");
 
@@ -100,7 +100,7 @@ public class BrokerTest {
     }
 
     @Test
-    void shouldCalculateTotalEquity_whenGetTotalEquity() {
+    void whenGetTotalEquity_shouldCalculateTotalEquity() {
         BrokerImpl broker = new BrokerImpl(1000);
         Order order = TestUtils.getValidOrder(BUY);
         broker.placeOrder(order);
@@ -113,7 +113,7 @@ public class BrokerTest {
     }
 
     @Test
-    void shouldReturnPercentageChanges_whenGetPercentageChanges() {
+    void whenGetPercentageChanges_shouldReturnPercentageChanges() {
         // Buy
         BrokerImpl broker = createPopulatedBroker();
         StockData refreshData = new StockData(120, "AAPL");

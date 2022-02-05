@@ -2,13 +2,15 @@ package io.github.samkelsey.backtester.broker.model;
 
 import io.github.samkelsey.backtester.broker.BrokerImpl;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * A data class used by {@link BrokerImpl} to hold the state of
  * each stock it currently owns.
  */
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class BrokerStockData {
 

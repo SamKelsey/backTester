@@ -1,7 +1,7 @@
 package io.github.samkelsey.backtester.broker.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * A data class to summarise the current state of the broker account.
  */
-@Data
+@Getter
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class BrokerAccountSummary {

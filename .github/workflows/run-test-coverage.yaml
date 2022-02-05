@@ -1,9 +1,11 @@
-name: Run test coverage
+name: Update test coverage
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - 'master'
 
 jobs:
-  Release:
+  updateCoverage:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
